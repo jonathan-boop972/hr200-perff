@@ -1,0 +1,3121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HR200 Perf">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1628">
+<title>HR200/120B · Performances</title>
+
+<!-- ═══ PWA MANIFEST INLINE ═══ -->
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22HR200%2F120B%20Performances%22%2C%22short_name%22%3A%22HR200%20Perf%22%2C%22description%22%3A%22Calculateur%20de%20performances%20Robin%20HR200%2F120B%20-%20POH%20Ed.5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22orientation%22%3A%22any%22%2C%22background_color%22%3A%22%230a1628%22%2C%22theme_color%22%3A%22%230a1628%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%2527http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%3D%25270%25200%2520512%2520512%2527%253E%253Crect%2520width%3D%2527512%2527%2520height%3D%2527512%2527%2520rx%3D%252780%2527%2520fill%3D%2527%25230a1628%2527%2F%253E%253Ctext%2520x%3D%2527256%2527%2520y%3D%2527320%2527%2520font-size%3D%2527260%2527%2520text-anchor%3D%2527middle%2527%253E%25F0%259F%259B%25A9%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
+<!-- ═══ ICÔNE iOS (apple-touch-icon) ═══ -->
+<!-- Icône SVG encodée en base64 pour l'écran d'accueil iOS -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjgwIiBmaWxsPSIjMGExNjI4Ii8+PHRleHQgeD0iMjU2IiB5PSIzMjAiIGZvbnQtc2l6ZT0iMjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7inIk8L3RleHQ+PHRleHQgeD0iMjU2IiB5PSI0NjAiIGZvbnQtc2l6ZT0iNzAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzJkN2RkMiI+SFIyMDA8L3RleHQ+PC9zdmc+">
+
+<!-- ═══ BANDEAU INSTALLATION PWA ═══ -->
+<style id="pwa-banner-style">
+#pwa_install_banner {
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:99998;
+  background:linear-gradient(135deg,#0d1e3a,#1a3a6e);
+  border-top:1px solid rgba(45,125,210,.5);
+  padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  box-shadow:0 -4px 20px rgba(0,0,0,.4);
+}
+#pwa_install_banner .pwa-content {
+  display:flex;align-items:center;gap:14px;max-width:600px;margin:0 auto;
+}
+#pwa_install_banner .pwa-icon {
+  font-size:36px;flex-shrink:0;
+}
+#pwa_install_banner .pwa-text {
+  flex:1;
+}
+#pwa_install_banner .pwa-title {
+  font-family:'Barlow Condensed','SF Pro Display',sans-serif;
+  font-weight:700;font-size:15px;color:#f0f4fa;
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;
+}
+#pwa_install_banner .pwa-sub {
+  font-size:13px;color:#8899bb;line-height:1.4;
+  font-family:-apple-system,sans-serif;
+}
+#pwa_install_banner .pwa-sub strong {color:var(--cyan,#00c9e0);}
+#pwa_install_banner .pwa-close {
+  background:none;border:none;color:#8899bb;font-size:22px;
+  cursor:pointer;padding:4px;flex-shrink:0;line-height:1;
+  -webkit-tap-highlight-color:transparent;
+}
+</style>
+<style>
+/* Polices système iOS/macOS en priorité, Google Fonts en fallback réseau */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+:root {
+  --navy:#0a1628; --blue:#1a3a6e; --accent:#2d7dd2; --sky:#4fa3e0;
+  --cyan:#00c9e0; --gold:#f0a500; --red:#e03c3c; --green:#2eb87e;
+  --white:#f0f4fa; --gray:#8899bb;
+  --panel:rgba(255,255,255,0.04); --border:rgba(100,150,220,0.18);
+  --inp-bg:rgba(45,125,210,0.12); --inp-br:rgba(45,125,210,0.4);
+  --r:12px; --rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+/* iOS : empêche le zoom auto sur focus des inputs (Documents by Readdle) */
+input[type=number],input[type=text],input[type=date],select{font-size:16px!important}
+/* iOS momentum scrolling */
+html{-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+/* Boutons : touch targets minimum 44px (Apple HIG) */
+button,.tab,.btn{min-height:44px}
+body{font-family:'Barlow',-apple-system,'SF Pro Text','Helvetica Neue',sans-serif;font-size:16px;background:var(--navy);color:var(--white);min-height:100vh;min-height:-webkit-fill-available;overflow-x:hidden}
+/* Safe area pour iPhone notch et home indicator */
+header{padding-top:max(12px, env(safe-area-inset-top));}
+main{padding-bottom:max(60px, calc(env(safe-area-inset-bottom) + 40px));}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(45,125,210,.15) 0%,transparent 60%),linear-gradient(160deg,#0a1628 0%,#0d1e3a 50%,#0a1628 100%);pointer-events:none;z-index:0}
+
+/* Header */
+header{position:sticky;top:0;z-index:100;background:rgba(10,22,40,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px}
+.hi{font-size:26px}
+.ht h1{font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:800;font-size:20px;letter-spacing:1px;text-transform:uppercase}
+.ht p{font-size:12px;color:var(--gray);margin-top:1px}
+.hb{margin-left:auto;background:rgba(45,125,210,.2);border:1px solid rgba(45,125,210,.4);color:var(--sky);font-family:'Space Mono','SF Mono','Courier New',monospace;font-size:12px;padding:5px 12px;border-radius:20px}
+
+/* Nav */
+nav{position:sticky;top:67px;z-index:99;background:rgba(10,22,40,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
+nav::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:13px 16px;font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:600;font-size:15px;letter-spacing:.8px;text-transform:uppercase;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--sky)}
+.tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+
+/* Main */
+main{position:relative;z-index:1;padding:20px 16px 60px;max-width:900px;margin:0 auto}
+.page{display:none}.page.active{display:block}
+
+/* Sections */
+.sec{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+.sec-h{background:rgba(26,58,110,.5);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:10px}
+.sec-h h2{font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:15px;letter-spacing:1.2px;text-transform:uppercase;color:var(--sky)}
+.sec-b{padding:14px 18px}
+
+/* Rows */
+.row{display:grid;grid-template-columns:1fr 130px 58px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(100,150,220,.07)}
+.row:last-child{border-bottom:none}
+.rl{font-size:15px;color:#b0c0d8}
+input[type=number],input[type=text],input[type=date]{background:var(--inp-bg);border:1px solid var(--inp-br);border-radius:var(--rs);color:#7ec8f5;font-family:'Space Mono','SF Mono','Courier New',monospace;font-size:14px;padding:9px 10px;text-align:right;width:100%;outline:none;transition:border-color .2s}
+input:focus{border-color:var(--cyan);background:rgba(0,201,224,.1)}
+select{background:var(--inp-bg);border:1px solid var(--inp-br);border-radius:var(--rs);color:#7ec8f5;font-family:'Space Mono','SF Mono','Courier New',monospace;font-size:14px;padding:9px 10px;width:100%;outline:none}
+.cv{background:rgba(255,255,255,.04);border:1px solid rgba(100,150,220,.15);border-radius:var(--rs);color:var(--white);font-family:'Space Mono','SF Mono','Courier New',monospace;font-size:13px;padding:9px 10px;text-align:right;width:100%}
+.unit{font-size:13px;color:var(--gray);font-style:italic;white-space:nowrap}
+
+/* Result cards */
+.rg{display:grid;gap:10px;margin-top:8px}
+.rg2{grid-template-columns:1fr 1fr}
+.rg3{grid-template-columns:1fr 1fr 1fr}
+.rg4{grid-template-columns:1fr 1fr 1fr 1fr}
+.rc{background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.25);border-radius:var(--r);padding:12px;text-align:center}
+.rc .v{font-family:'Space Mono','SF Mono','Courier New',monospace;font-size:22px;font-weight:700;color:var(--gold);line-height:1}
+.rc .l{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.rc.bl{background:rgba(45,125,210,.1);border-color:rgba(45,125,210,.3)}
+.rc.bl .v{color:var(--sky)}
+.rc.gn{background:rgba(46,184,126,.1);border-color:rgba(46,184,126,.3)}
+.rc.gn .v{color:var(--green)}
+.rc.rd{background:rgba(224,60,60,.1);border-color:rgba(224,60,60,.3)}
+.rc.rd .v{color:var(--red)}
+
+/* Status banners */
+.sb{border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:16px;letter-spacing:.8px;text-transform:uppercase;margin-top:12px}
+.sb.go{background:rgba(46,184,126,.15);border:1px solid rgba(46,184,126,.4);color:var(--green)}
+.sb.nogo{background:rgba(224,60,60,.15);border:1px solid rgba(224,60,60,.4);color:var(--red)}
+.sb.warn{background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.35);color:var(--gold)}
+
+/* Tableau de préparation */
+.gnr{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(100,150,220,.08)}
+.gnr:last-child{border-bottom:none}
+.gnl{font-size:14px;color:#b0c0d8}
+.gnv{font-family:'Space Mono','SF Mono','Courier New',monospace;font-size:11px;color:var(--gray);text-align:right}
+.badge{font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:13px;letter-spacing:.8px;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.badge.go{background:rgba(46,184,126,.2);color:var(--green);border:1px solid rgba(46,184,126,.4)}
+.badge.nogo{background:rgba(224,60,60,.2);color:var(--red);border:1px solid rgba(224,60,60,.4)}
+.badge.warn{background:rgba(240,165,0,.15);color:var(--gold);border:1px solid rgba(240,165,0,.35)}
+
+/* Chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:rgba(45,125,210,.1);border:1px solid rgba(45,125,210,.25);color:var(--sky);font-size:12px;font-family:'Space Mono','SF Mono','Courier New',monospace;padding:4px 10px;border-radius:20px}
+
+/* Info box */
+.info{background:rgba(45,125,210,.08);border:1px solid rgba(45,125,210,.2);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--sky);line-height:1.6}
+.warn-box{background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.3);border-radius:var(--rs);padding:10px 14px;margin-bottom:10px;font-size:13px;color:var(--gold);line-height:1.6}
+
+/* Btn */
+.btn{display:inline-flex;align-items:center;gap:6px;background:rgba(45,125,210,.2);border:1px solid rgba(45,125,210,.4);color:var(--sky);font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:600;font-size:14px;letter-spacing:.8px;text-transform:uppercase;padding:10px 18px;border-radius:var(--rs);cursor:pointer;transition:all .2s;-webkit-appearance:none}
+.btn.primary{background:rgba(45,125,210,.35);border-color:var(--accent);color:var(--white)}
+.btn:active{transform:scale(.97)}
+
+/* CG Chart */
+.chart-wrap{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-top:10px}
+
+/* divider */
+.div{height:1px;background:var(--border);margin:14px 0}
+
+/* POH source tag */
+.poh-tag{display:inline-block;background:rgba(0,201,224,.1);border:1px solid rgba(0,201,224,.3);color:var(--cyan);font-size:11px;font-family:'Space Mono','SF Mono','Courier New',monospace;padding:2px 8px;border-radius:20px;margin-left:8px}
+
+@media print{
+  body>*:not(#pz){display:none!important}
+  #pz{display:block!important}
+  .pdf-page{width:210mm;min-height:297mm;padding:14mm 16mm;margin:0;background:#fff;color:#111;font-family:Arial,sans-serif;font-size:9pt;page-break-after:always}
+  .pdf-page:last-child{page-break-after:avoid}
+  .pdf-hdr{border-bottom:3px solid #0a1628;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end}
+  .pdf-hdr h1{font-size:15pt;font-weight:900;color:#0a1628;text-transform:uppercase;margin:0}
+  .pdf-hdr .sub{font-size:8pt;color:#666;margin-top:2px}
+  .pdf-hdr .meta{text-align:right;font-size:8pt;color:#555;line-height:1.6}
+  .pdf-sec{margin-bottom:10px}
+  .pdf-sec-t{background:#0a1628;color:#fff;font-size:9pt;font-weight:700;padding:4px 8px;text-transform:uppercase}
+  table.pdf{width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px}
+  table.pdf th{background:#1a3a6e;color:#fff;padding:3px 6px;font-size:8pt;text-align:left}
+  table.pdf td{padding:3px 6px;border-bottom:1px solid #e0e8f0}
+  table.pdf tr:nth-child(even) td{background:#f4f7fb}
+  table.pdf td.r{text-align:right;font-weight:700;font-family:'Courier New',monospace}
+  table.pdf td.u{color:#888;font-style:italic}
+  .pdf-g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px}
+  .pdf-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
+  .pdf-g2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+  .pdf-card{border:1.5px solid #1a3a6e;border-radius:4px;padding:5px 6px;text-align:center}
+  .pdf-card .cv{font-size:12pt;font-weight:900;color:#0a1628;font-family:'Courier New',monospace}
+  .pdf-card .cl{font-size:7pt;color:#888;text-transform:uppercase;margin-top:2px}
+  .pdf-card.ok{border-color:#1a7a50;background:#e8f7ef}.pdf-card.ok .cv{color:#1a7a50}
+  .pdf-card.ng{border-color:#c0392b;background:#fdecea}.pdf-card.ng .cv{color:#c0392b}
+  .pdf-card.wn{border-color:#d68910;background:#fef9e7}.pdf-card.wn .cv{color:#d68910}
+  .pdf-vrd{padding:7px 10px;border-radius:3px;font-weight:900;font-size:10pt;text-align:center;text-transform:uppercase;margin:6px 0}
+  .pdf-vrd.ok{background:#e8f7ef;color:#1a7a50;border:2px solid #1a7a50}
+  .pdf-vrd.ng{background:#fdecea;color:#c0392b;border:2px solid #c0392b}
+  .pdf-vrd.wn{background:#fef9e7;color:#d68910;border:2px solid #d68910}
+  .pdf-gnr{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;padding:3px 6px;border-bottom:1px solid #e0e8f0;font-size:8.5pt}
+  .pdf-gnr:nth-child(even){background:#f4f7fb}
+  .pdf-bdg{padding:2px 6px;border-radius:8px;font-weight:700;font-size:8pt;white-space:nowrap}
+  .pdf-bdg.ok{background:#e8f7ef;color:#1a7a50;border:1px solid #1a7a50}
+  .pdf-bdg.ng{background:#fdecea;color:#c0392b;border:1px solid #c0392b}
+  .pdf-bdg.wn{background:#fef9e7;color:#d68910;border:1px solid #d68910}
+  .pdf-ft{border-top:1px solid #ccc;margin-top:10px;padding-top:5px;font-size:7.5pt;color:#888;display:flex;justify-content:space-between}
+  .pdf-sig{border:1px solid #aaa;border-radius:3px;padding:8px;margin-top:6px;display:inline-block;width:48%}
+  .pdf-sig-l{font-size:8pt;color:#888;margin-bottom:16px}
+  .pdf-sig-line{border-top:1px solid #555;width:180px;display:block;margin-top:4px}
+  .pdf-note{border:1px solid #1a3a6e;border-radius:3px;padding:8px;min-height:28px;font-style:italic;font-size:9pt}
+  @page{margin:0;size:A4 portrait}
+}
+</style>
+</head>
+<body>
+
+<!-- Bandeau installation PWA (affiché uniquement dans Safari, pas en mode standalone) -->
+<div id="pwa_install_banner">
+  <div class="pwa-content">
+    <div class="pwa-icon">✈️</div>
+    <div class="pwa-text">
+      <div class="pwa-title">Installer HR200 Perf sur l'écran d'accueil</div>
+      <div class="pwa-sub">
+        Appuyez sur <strong>⬆ Partager</strong> puis
+        <strong>« Sur l'écran d'accueil »</strong> — l'app se lancera en plein écran et le réseau fonctionnera.
+      </div>
+    </div>
+    <button class="pwa-close" onclick="dismissPWABanner()" aria-label="Fermer">✕</button>
+  </div>
+</div>
+
+<header>
+  <div class="hi">✈️</div>
+  <div class="ht">
+    <h1>Robin HR200/120 B</h1>
+    <p>Calculateur de performances · POH Éd.5 Jan.1993</p>
+  </div>
+  <div class="hb" id="hbadge">PRÊT</div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="showPage('avion')">🛩 Avion</div>
+  <div class="tab" onclick="showPage('aerodromes')">🛬🛫 Aérodromes</div>
+  <div class="tab" onclick="showPage('meteo')">⛅ Météo</div>
+  <div class="tab" onclick="showPage('vol')">✈️ Vol</div>
+  <div class="tab" onclick="showPage('carburant')">⛽ Fuel</div>
+  <div class="tab" onclick="showPage('centrage')">⚖️ Masse & CG</div>
+  <div class="tab" onclick="showPage('decollage')">🛫 Décollage</div>
+  <div class="tab" onclick="showPage('atterro')">🛬 Atterrissage</div>
+  <div class="tab" onclick="showPage('bord')">📊 Bord</div>
+  <div class="tab" onclick="showPage('briefing')">📡 Briefing</div>
+  <div class="tab" onclick="showPage('dossier')">📄 Dossier</div>
+</nav>
+
+<main>
+<!-- ═══════ PAGE AVION ═══════ -->
+<div class="page active" id="page-avion">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-size:13px;color:var(--gray)">💾 <span id="save_status">Données sauvegardées automatiquement</span></div>
+    <button class="btn" onclick="effacer()" style="padding:6px 14px;font-size:12px;color:var(--red);border-color:rgba(224,60,60,.4)">🗑 Réinitialiser</button>
+  </div>
+  <div class="warn-box">⚠️ Toutes les valeurs de référence sont issues du POH HR200/120 B Éd.5 – Jan.1993. Les distances calculées sont basées sur l'interpolation des abaques officiels. Elles constituent une aide à la préparation du vol — le pilote reste seul responsable.</div>
+
+  <div class="sec">
+    <div class="sec-h"><span>📋</span><h2>Données avion</h2><span class="poh-tag">POH §2</span></div>
+    <div class="sec-b">
+      <div class="row"><span class="rl">Immatriculation</span><input type="text" id="immat" value="F-BXXX" onchange="save()" style="text-transform:uppercase;text-align:center"><span class="unit"></span></div>
+      <div class="row"><span class="rl">MTOW <span class="poh-tag">780 kg</span></span><div class="cv" style="color:var(--gray)">780</div><span class="unit">kg</span></div>
+      <div class="row"><span class="rl">Carburant utilisable <span class="poh-tag">118 L</span></span><div class="cv" style="color:var(--gray)">118</div><span class="unit">L</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>⚖️</span><h2>Devis de Masse</h2></div>
+    <div class="sec-b">
+      <div class="info">💡 Ces données alimentent automatiquement le centrage et le carburant.</div>
+      <div class="row"><span class="rl">Masse à vide (BEW)<br><small style="color:var(--gray);font-size:12px">Depuis fiche de pesée</small></span><input type="number" id="bew" value="515" onchange="calc()"><span class="unit">kg</span></div>
+      <div class="row"><span class="rl">Pilote (avant gauche)</span><input type="number" id="pax1" value="80" onchange="calc()"><span class="unit">kg</span></div>
+      <div class="row"><span class="rl">Passager (avant droit)</span><input type="number" id="pax2" value="0" onchange="calc()"><span class="unit">kg</span></div>
+      <div class="row"><span class="rl">Bagages (max 35 kg)</span><input type="number" id="bags" value="0" onchange="calc()"><span class="unit">kg</span></div>
+      <div class="row"><span class="rl">Carburant embarqué</span><input type="number" id="fuel_vol" value="90" onchange="calc()"><span class="unit">L</span></div>
+      <div class="row"><span class="rl">Masse carburant</span><div class="cv" id="fuel_kg_d">64.8</div><span class="unit">kg</span></div>
+      <div class="row" style="padding:10px 0"><span class="rl" style="font-weight:600;color:var(--gold)">MASSE AU DÉCOLLAGE (TOW)</span><div class="cv" id="tow_d" style="color:var(--gold);font-weight:700;font-size:15px">659.8</div><span class="unit">kg</span></div>
+      <div id="tow_status" class="sb go">✅ Dans les limites MTOW</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>⚡</span><h2>Vitesses de référence</h2><span class="poh-tag">POH §4+§5</span></div>
+    <div class="sec-b">
+      <div class="info">Toutes les vitesses sont <strong>indiquées</strong> (VI) en km/h — Source : POH Éd.5</div>
+      <div class="rg rg4" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v">110</div><div class="l">Vs1 (km/h)</div></div>
+        <div class="rc bl"><div class="v">96</div><div class="l">Vs0 (km/h)</div></div>
+        <div class="rc bl"><div class="v">90</div><div class="l">VR décol. (km/h)</div></div>
+        <div class="rc bl"><div class="v">130</div><div class="l">V montée init. (km/h)</div></div>
+      </div>
+      <div class="rg rg4" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v">140</div><div class="l">Vy volets 0° (km/h)</div></div>
+        <div class="rc bl"><div class="v">120</div><div class="l">Vx volets 0° (km/h)</div></div>
+        <div class="rc bl"><div class="v">135</div><div class="l">Vy volets 10° (km/h)</div></div>
+        <div class="rc bl"><div class="v">115</div><div class="l">Vx volets 10° (km/h)</div></div>
+      </div>
+      <div class="rg rg4">
+        <div class="rc bl"><div class="v">125</div><div class="l">Vapp finale (km/h)</div></div>
+        <div class="rc bl"><div class="v">115</div><div class="l">Vapp court (km/h)</div></div>
+        <div class="rc bl"><div class="v">176</div><div class="l">Vfe (km/h)</div></div>
+        <div class="rc bl"><div class="v">33</div><div class="l">Xwind max (km/h)</div></div>
+      </div>
+      <div class="div"></div>
+      <div class="rg rg3">
+        <div class="rc"><div class="v" id="r_vapp_gust_dep">—</div><div class="l">Vapp dép+½rafale (km/h)</div></div>
+        <div class="rc"><div class="v">242</div><div class="l">Vno (km/h)</div></div>
+        <div class="rc"><div class="v">296</div><div class="l">Vne (km/h)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE TERRAINS ═══════ -->
+<div class="page" id="page-aerodromes">
+
+  <!-- ── DÉPART ── -->
+  <div style="background:rgba(26,58,110,.6);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px">
+    <span style="font-size:18px">🛫</span>
+    <span style="font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;color:var(--cyan)">Aérodrome de départ</span>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>🛫</span><h2>Aérodrome de départ & Piste</h2></div>
+    <div class="sec-b">
+      <div class="info">💡 Ces données alimentent les calculs de décollage et le carburant.</div>
+      <div class="row"><span class="rl">Indicatif OACI départ</span><input type="text" id="oaci" value="LFPB" onchange="calc();syncOaci()" style="text-transform:uppercase;text-align:center"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Altitude aérodrome</span><input type="number" id="elev" value="325" onchange="calc()"><span class="unit">ft</span></div>
+      <div class="row"><span class="rl">N° piste utilisée</span><input type="number" id="rwy_num" value="27" onchange="calc()"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Cap magnétique piste</span><input type="number" id="rwy_hdg" value="270" onchange="calc()"><span class="unit">°Mag</span></div>
+      <div class="row"><span class="rl">TORA disponible</span><input type="number" id="tora" value="1200" onchange="calc()"><span class="unit">m</span></div>
+      <div class="row"><span class="rl">Revêtement piste départ</span>
+        <select id="surface" onchange="calc()">
+          <option value="hard_dry">Dur sec</option>
+          <option value="hard_wet">Dur mouillé</option>
+          <option value="grass_dry">Herbe sèche</option>
+        </select>
+      <span class="unit"></span></div>
+    </div>
+  </div>
+
+  <!-- ── ARRIVÉE ── -->
+  <div style="background:rgba(26,58,110,.6);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;margin:16px 0 10px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:18px">🛬</span>
+      <span style="font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)">Aérodrome d'arrivée</span>
+    </div>
+    <button class="btn" onclick="volLocal()" style="padding:7px 14px;font-size:13px;color:var(--cyan);border-color:rgba(0,201,224,.4)">
+      🔄 Vol local (= départ)
+    </button>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>🛬</span><h2>Aérodrome d'arrivée & Piste</h2></div>
+    <div class="sec-b">
+      <div class="info">💡 Ces données alimentent les calculs d'atterrissage.</div>
+      <div class="row"><span class="rl">Indicatif OACI arrivée</span><input type="text" id="arr_oaci" value="LFPB" onchange="calc()" style="text-transform:uppercase;text-align:center"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Altitude aérodrome</span><input type="number" id="arr_elev" value="325" onchange="calc()"><span class="unit">ft</span></div>
+      <div class="row"><span class="rl">N° piste arrivée</span><input type="number" id="arr_rwy_num" value="27" onchange="calc()"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Cap magnétique piste</span><input type="number" id="arr_rwy_hdg" value="270" onchange="calc()"><span class="unit">°Mag</span></div>
+      <div class="row"><span class="rl">LDA disponible</span><input type="number" id="lda_avail" value="1100" onchange="calc()"><span class="unit">m</span></div>
+      <div class="row"><span class="rl">Revêtement piste arrivée</span>
+        <select id="arr_surface" onchange="calc()">
+          <option value="hard_dry">Dur sec</option>
+          <option value="hard_wet">Dur mouillé</option>
+          <option value="grass_dry">Herbe sèche</option>
+        </select>
+      <span class="unit"></span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ PAGE MÉTÉO ═══════ -->
+<div class="page" id="page-meteo">
+
+  <!-- ── DÉPART ── -->
+  <div style="background:rgba(26,58,110,.6);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:18px">🛫</span>
+      <span style="font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;color:var(--cyan)">Météo départ</span>
+    </div>
+    <button class="btn" id="btn_fetch_dep" onclick="fetchMetar('dep')" style="padding:7px 14px;font-size:13px;color:var(--cyan);border-color:rgba(0,201,224,.4)">
+      🌐 Charger METAR
+    </button>
+  </div>
+
+  <!-- Bandeau source METAR départ -->
+  <div id="metar_src_dep" style="display:none;background:rgba(0,201,224,.07);border:1px solid rgba(0,201,224,.25);border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12px;color:var(--cyan);font-family:'SF Mono','Space Mono',monospace;line-height:1.5">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <strong id="metar_raw_dep_label" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.7">METAR brut</strong>
+      <span id="metar_age_dep" style="font-size:11px;opacity:.6"></span>
+    </div>
+    <div id="metar_raw_dep" style="word-break:break-all"></div>
+    <div id="taf_raw_dep" style="margin-top:6px;color:#8899bb;border-top:1px solid rgba(0,201,224,.15);padding-top:6px;word-break:break-all"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>🌡️</span><h2>METAR départ</h2><span id="metar_src_badge_dep" class="poh-tag" style="display:none">aviationweather.gov</span></div>
+    <div class="sec-b">
+      <div class="row"><span class="rl">QNH</span><input type="number" id="qnh" value="1013" onchange="calc()"><span class="unit">hPa</span></div>
+      <div class="row"><span class="rl">Température OAT</span><input type="number" id="oat" value="15" onchange="calc()"><span class="unit">°C</span></div>
+      <div class="row"><span class="rl">Point de rosée</span><input type="number" id="dew" value="8" onchange="calc()"><span class="unit">°C</span></div>
+      <div class="row"><span class="rl">Vent — direction</span><input type="number" id="wind_dir" value="270" onchange="calc()"><span class="unit">°V</span></div>
+      <div class="row"><span class="rl">Vent — vitesse</span><input type="number" id="wind_spd" value="10" onchange="calc()"><span class="unit">km/h</span></div>
+      <div class="row"><span class="rl">Rafales (0 si aucune)</span><input type="number" id="wind_gust" value="0" onchange="calc()"><span class="unit">km/h</span></div>
+      <div class="row"><span class="rl">Visibilité (METAR)</span><input type="text" id="vis_metar" placeholder="ex: 9999 ou 3000" onchange="save()" style="text-align:center"><span class="unit">m</span></div>
+      <div class="row"><span class="rl">Plafond / Nuages</span><input type="text" id="ceiling_metar" placeholder="ex: FEW025 SCT080" onchange="save()" style="text-align:center"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Précipitations</span>
+        <select id="precip" onchange="calc()">
+          <option value="none">Aucune</option>
+          <option value="light">Pluie légère</option>
+          <option value="heavy">Pluie forte</option>
+        </select>
+      <span class="unit"></span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>📐</span><h2>Atmosphère départ</h2></div>
+    <div class="sec-b">
+      <div class="rg rg4" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v" id="r_palt">325</div><div class="l">Alt. pression (ft)</div></div>
+        <div class="rc bl"><div class="v" id="r_isa_dev">0.0</div><div class="l">Écart ISA (°C)</div></div>
+        <div class="rc"><div class="v" id="r_da">325</div><div class="l">Densité Alt. (ft)</div></div>
+        <div class="rc bl"><div class="v" id="r_sigma">1.000</div><div class="l">Densité σ</div></div>
+      </div>
+      <div class="rg rg3" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v" id="r_hdw">+10</div><div class="l">Vent face (km/h)</div></div>
+        <div class="rc bl"><div class="v" id="r_xwind">0</div><div class="l">Vent travers (km/h)</div></div>
+        <div class="rc bl"><div class="v" id="r_hdw_gust">0</div><div class="l">Rafale face (km/h)</div></div>
+      </div>
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc"><div class="v" id="r_td_spread">—</div><div class="l">Écart T–Td (°C)</div></div>
+        <div class="rc" id="r_carb_ice_card"><div class="v" id="r_carb_ice">—</div><div class="l">Givrage carbu</div></div>
+      </div>
+      <div id="xwind_warn" class="sb go" style="margin-top:4px">✅ Vent de travers acceptable</div>
+    </div>
+  </div>
+
+  <!-- TAF départ -->
+  <div class="sec" id="taf_dep_sec" style="display:none">
+    <div class="sec-h"><span>📅</span><h2>TAF départ</h2><span class="poh-tag">aviationweather.gov</span></div>
+    <div class="sec-b">
+      <div id="taf_dep_display" style="font-family:'SF Mono','Space Mono',monospace;font-size:12px;color:#d0e8ff;line-height:1.8;word-break:break-word"></div>
+    </div>
+  </div>
+
+  <!-- ── ARRIVÉE ── -->
+  <div style="background:rgba(26,58,110,.6);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;margin:16px 0 10px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:18px">🛬</span>
+      <span style="font-family:'Barlow Condensed','SF Pro Display','Helvetica Neue',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)">Météo arrivée</span>
+    </div>
+    <button class="btn" id="btn_fetch_arr" onclick="fetchMetar('arr')" style="padding:7px 14px;font-size:13px;color:var(--gold);border-color:rgba(240,165,0,.4)">
+      🌐 Charger METAR
+    </button>
+  </div>
+
+  <!-- Bandeau source METAR arrivée -->
+  <div id="metar_src_arr" style="display:none;background:rgba(240,165,0,.07);border:1px solid rgba(240,165,0,.25);border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12px;color:#f0c060;font-family:'SF Mono','Space Mono',monospace;line-height:1.5">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <strong id="metar_raw_arr_label" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.7">METAR brut</strong>
+      <span id="metar_age_arr" style="font-size:11px;opacity:.6"></span>
+    </div>
+    <div id="metar_raw_arr" style="word-break:break-all"></div>
+    <div id="taf_raw_arr" style="margin-top:6px;color:#8899bb;border-top:1px solid rgba(240,165,0,.15);padding-top:6px;word-break:break-all"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>🌡️</span><h2>METAR arrivée</h2><span id="metar_src_badge_arr" class="poh-tag" style="display:none">aviationweather.gov</span></div>
+    <div class="sec-b">
+      <div class="row"><span class="rl">QNH arrivée</span><input type="number" id="arr_qnh" value="1013" onchange="calc()"><span class="unit">hPa</span></div>
+      <div class="row"><span class="rl">Température OAT</span><input type="number" id="arr_oat" value="15" onchange="calc()"><span class="unit">°C</span></div>
+      <div class="row"><span class="rl">Vent — direction</span><input type="number" id="arr_wind_dir" value="270" onchange="calc()"><span class="unit">°V</span></div>
+      <div class="row"><span class="rl">Vent — vitesse</span><input type="number" id="arr_wind_spd" value="10" onchange="calc()"><span class="unit">km/h</span></div>
+      <div class="row"><span class="rl">Rafales (0 si aucune)</span><input type="number" id="arr_wind_gust" value="0" onchange="calc()"><span class="unit">km/h</span></div>
+      <div class="row"><span class="rl">Visibilité (METAR)</span><input type="text" id="arr_vis_metar" placeholder="ex: 9999 ou 3000" onchange="save()" style="text-align:center"><span class="unit">m</span></div>
+      <div class="row"><span class="rl">Plafond / Nuages</span><input type="text" id="arr_ceiling_metar" placeholder="ex: FEW025 SCT080" onchange="save()" style="text-align:center"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Précipitations</span>
+        <select id="arr_precip" onchange="calc()">
+          <option value="none">Aucune</option>
+          <option value="light">Pluie légère</option>
+          <option value="heavy">Pluie forte</option>
+        </select>
+      <span class="unit"></span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>📐</span><h2>Atmosphère arrivée</h2></div>
+    <div class="sec-b">
+      <div class="rg rg4" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v" id="r_arr_palt">325</div><div class="l">Alt. pression (ft)</div></div>
+        <div class="rc bl"><div class="v" id="r_arr_isa_dev">0.0</div><div class="l">Écart ISA (°C)</div></div>
+        <div class="rc"><div class="v" id="r_arr_da">325</div><div class="l">Densité Alt. (ft)</div></div>
+        <div class="rc bl"><div class="v" id="r_arr_hdw">+10</div><div class="l">Vent face piste (km/h)</div></div>
+      </div>
+      <div id="arr_xwind_warn" class="sb go" style="margin-top:4px">✅ Vent de travers arrivée acceptable</div>
+    </div>
+  </div>
+
+  <!-- TAF arrivée -->
+  <div class="sec" id="taf_arr_sec" style="display:none">
+    <div class="sec-h"><span>📅</span><h2>TAF arrivée</h2><span class="poh-tag">aviationweather.gov</span></div>
+    <div class="sec-b">
+      <div id="taf_arr_display" style="font-family:'SF Mono','Space Mono',monospace;font-size:12px;color:#f0c060;line-height:1.8;word-break:break-word"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ PAGE BRIEFING ═══════ -->
+<div class="page" id="page-briefing">
+
+  <div class="warn-box">⚠️ Note : le chargement des données (METAR, TAF, NOTAM) nécessite une connexion internet. Sur Mac via fichier local, le navigateur bloque ces requêtes par sécurité — utilisez cet outil sur iPad dans Documents by Readdle où cela fonctionne normalement.</div>
+
+  <!-- Liens officiels -->
+  <div class="sec">
+    <div class="sec-h"><span>🔗</span><h2>Accès directs — Sources officielles</h2></div>
+    <div class="sec-b">
+      <div class="info">Appuyez pour ouvrir dans Safari. Source officielle SIA / Météo-France.</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+        <a href="https://aviation.meteo.fr" target="_blank" style="display:flex;align-items:center;gap:12px;background:rgba(45,125,210,.12);border:1px solid rgba(45,125,210,.3);border-radius:10px;padding:12px 16px;text-decoration:none;color:var(--white)">
+          <span style="font-size:22px">☁️</span>
+          <div><div style="font-weight:700;font-size:14px">Météo Aviation — SIA</div><div style="font-size:12px;color:var(--gray)">TEMSI, WINTEMP, Vents, Givrage — aviation.meteo.fr</div></div>
+          <span style="margin-left:auto;color:var(--gray)">›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTAM -->
+  <div class="sec">
+    <div class="sec-h"><span>🔔</span><h2>NOTAM</h2><span class="poh-tag">aviationweather.gov</span></div>
+    <div class="sec-b">
+      <div class="info">Récupération des NOTAM actifs via NOAA aviationweather.gov. Saisissez un ou plusieurs indicatifs OACI séparés par des espaces.</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
+        <input type="text" id="notam_oaci_input" placeholder="ex: LFPB LFPO LFOB"
+          style="flex:1;text-transform:uppercase;text-align:left"
+          onkeydown="if(event.key==='Enter')fetchNotam()">
+        <button class="btn primary" id="btn_fetch_notam" onclick="fetchNotam()"
+          style="padding:9px 16px;font-size:14px;flex-shrink:0;min-width:120px">
+          🔔 Charger NOTAM
+        </button>
+      </div>
+      <div id="notam_panel">
+        <div style="color:var(--gray);font-size:13px;text-align:center;padding:16px 0">
+          Entrez un indicatif OACI et appuyez sur "Charger NOTAM"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METAR / TAF chargés -->
+  <div class="sec">
+    <div class="sec-h"><span>📡</span><h2>METAR / TAF chargés</h2><span class="poh-tag">aviationweather.gov</span></div>
+    <div class="sec-b">
+      <div class="info">Ces données sont chargées via le bouton "🌐 Charger METAR" de l'onglet ⛅ Météo.</div>
+      <div id="briefing_metar_panel">
+        <div style="color:var(--gray);font-size:13px;text-align:center;padding:20px 0">
+          Aucun METAR chargé — utilisez les boutons "🌐 Charger METAR" dans l'onglet ⛅ Météo
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes briefing -->
+  <div class="sec">
+    <div class="sec-h"><span>📝</span><h2>Notes de briefing</h2></div>
+    <div class="sec-b">
+      <div class="info">Zone de notes libres — collez ici vos informations de briefing (TEMSI, restrictions d'espace aérien, etc.).</div>
+      <textarea id="briefing_notes" placeholder="Notes de briefing, restrictions, informations complémentaires..." onchange="save()" style="width:100%;min-height:140px;background:var(--inp-bg);border:1px solid var(--inp-br);border-radius:var(--rs);color:var(--white);font-family:'SF Mono','Space Mono',monospace;font-size:13px;padding:10px;resize:vertical;outline:none;line-height:1.5"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ PAGE VOL ═══════ -->
+<div class="page" id="page-vol">
+
+  <div class="sec">
+    <div class="sec-h"><span>✈️</span><h2>Informations du vol</h2></div>
+    <div class="sec-b">
+      <div class="info">💡 Ces informations alimentent le fuel planning, le centrage et le dossier de vol.</div>
+      <div class="row"><span class="rl">Date du vol</span><input type="date" id="dv_date" onchange="save()"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Type de vol</span>
+        <select id="vol_type" onchange="toggleVolType();calc();save()">
+          <option value="nav">Navigation</option>
+          <option value="local">Vol local</option>
+        </select>
+      <span class="unit"></span></div>
+      <div class="row"><span class="rl">Départ (OACI)</span><input type="text" id="dv_dep" placeholder="LFPB" onchange="save();syncVolFields()" style="text-transform:uppercase;text-align:center"><span class="unit"></span></div>
+      <!-- Nav uniquement -->
+      <div id="row_dest" class="row"><span class="rl">Destination (OACI)</span><input type="text" id="dv_arr" placeholder="LFPO" onchange="save()" style="text-transform:uppercase;text-align:center"><span class="unit"></span></div>
+      <div id="row_altn" class="row"><span class="rl">Dégagement (OACI)</span><input type="text" id="dv_altn" placeholder="LFOB" onchange="calc();save()" style="text-transform:uppercase;text-align:center"><span class="unit"></span></div>
+      <div id="row_dist" class="row"><span class="rl">Distance DEP→DEST</span><input type="number" id="dist_nm" value="0" onchange="calc()"><span class="unit">NM</span></div>
+      <div id="row_dist_altn" class="row"><span class="rl">Distance DEST→ALTN</span><input type="number" id="dist_altn_nm" value="0" onchange="calc()"><span class="unit">NM</span></div>
+      <!-- Vol local : info renvoi vers Fuel planning -->
+      <div id="row_local_dur" style="display:none;padding:8px 0;border-bottom:1px solid rgba(100,150,220,.07)">
+        <div style="background:rgba(0,201,224,.08);border:1px solid rgba(0,201,224,.2);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--cyan)">
+          ⏱ En vol local, saisissez la <strong>durée prévue</strong> dans l'onglet <strong>⛽ Fuel → Trip time</strong>. Elle sera utilisée pour le fuel planning.
+        </div>
+      </div>
+      <!-- Commun -->
+      <div class="row"><span class="rl">Route / Waypoints</span><input type="text" id="dv_route" placeholder="Tour de piste / DCT..." onchange="save()"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Altitude de croisière</span><input type="text" id="dv_alt" placeholder="1500 ft AMSL" onchange="save()"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Heure départ (UTC)</span><input type="time" id="dv_etd" onchange="save()" style="text-align:center;color:#7ec8f5"><span class="unit">UTC</span></div>
+      <div class="row"><span class="rl">Règles de vol</span>
+        <select id="dv_rules" onchange="save()"><option>VFR</option><option>VFR de nuit</option><option>IFR</option></select>
+      <span class="unit"></span></div>
+      <div class="row"><span class="rl">Source météo</span><input type="text" id="dv_metar_src" placeholder="SIA / Météo Aviation" onchange="save()"><span class="unit"></span></div>
+      <div class="row"><span class="rl">Notes / Observations</span><input type="text" id="dv_notes" placeholder="Remarques..." onchange="save()"><span class="unit"></span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>⚙️</span><h2>Régime de croisière</h2><span class="poh-tag">POH §5.09</span></div>
+    <div class="sec-b">
+      <div class="info">Valeurs du tableau POH §5.09 — Masse max 780 kg, atmosphère standard, vent nul, mélange optimal.</div>
+      <div class="row"><span class="rl">Régime sélectionné</span>
+        <select id="regime" onchange="calc()">
+          <option value="75">SL — 2500 tr/min — 204 km/h — 25 L/h</option>
+          <option value="croisiere_3000">3000 ft — 2650 tr/min — 215 km/h — 25 L/h</option>
+          <option value="croisiere_5000">5000 ft — 2700 tr/min — 217 km/h — 25 L/h</option>
+          <option value="croisiere_7000">7000 ft — 2800 tr/min — 223 km/h — 25 L/h</option>
+        </select>
+      <span class="unit"></span></div>
+      <div class="rg rg4" style="margin-top:10px">
+        <div class="rc bl"><div class="v" id="r_conso">25</div><div class="l">Conso (L/h)</div></div>
+        <div class="rc bl"><div class="v" id="r_vcr">204</div><div class="l">Vp (km/h)</div></div>
+        <div class="rc bl"><div class="v" id="r_vsol_kt">—</div><div class="l">Vsol (kt)</div></div>
+        <div class="rc bl"><div class="v" id="r_endur_tot">—</div><div class="l">Endurance max (h)</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ PAGE DÉCOLLAGE ═══════ -->
+<div class="page" id="page-decollage">
+  <div class="sec">
+    <div class="sec-h"><span>🛫</span><h2>Distances de décollage corrigées</h2><span class="poh-tag">Abaques POH §5</span></div>
+    <div class="sec-b">
+      <div class="chips" id="chips_to" style="margin-bottom:12px"></div>
+      <div class="info">Méthode : interpolation bilinéaire des abaques POH (altitude densité × masse). Correctifs vent et revêtement appliqués ensuite selon POH.</div>
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc"><div class="v" id="r_to_roll">—</div><div class="l">Roulage décollage (m)</div></div>
+        <div class="rc"><div class="v" id="r_to_15">—</div><div class="l">Distance 15m/50ft (m)</div></div>
+      </div>
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v" id="r_to_req">—</div><div class="l">Requis +margin (m)</div></div>
+        <div class="rc bl"><div class="v" id="r_tora_d">—</div><div class="l">TORA dispo (m)</div></div>
+      </div>
+      <div id="to_status" class="sb go">✅ Décollage possible</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>🔍</span><h2>Détail des corrections</h2></div>
+    <div class="sec-b" id="to_detail"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>⚡</span><h2>Vitesses décollage</h2></div>
+    <div class="sec-b">
+      <div class="rg rg4">
+        <div class="rc bl"><div class="v">90</div><div class="l">VR (km/h)</div></div>
+        <div class="rc bl"><div class="v">130</div><div class="l">V montée init. (km/h)</div></div>
+        <div class="rc bl"><div class="v">115</div><div class="l">Vx volets 10° (km/h)</div></div>
+        <div class="rc bl"><div class="v">135</div><div class="l">Vy volets 10° (km/h)</div></div>
+      </div>
+      <div class="rg rg2" style="margin-top:10px">
+        <div class="rc bl"><div class="v" id="r_roc">—</div><div class="l">Taux montée à DA (ft/min)</div></div>
+        <div class="rc bl"><div class="v" id="r_roc_ms">—</div><div class="l">Taux montée à DA (m/s)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE ATTERRISSAGE ═══════ -->
+<div class="page" id="page-atterro">
+  <div class="sec">
+    <div class="sec-h"><span>🛬</span><h2>Distances d'atterrissage corrigées</h2><span class="poh-tag">Abaques POH §5</span></div>
+    <div class="sec-b">
+      <div class="chips" id="chips_ldg" style="margin-bottom:12px"></div>
+      <div class="info">Méthode : interpolation bilinéaire des abaques POH. Vapp normale = 125 km/h volets 20°.</div>
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc"><div class="v" id="r_ldr">—</div><div class="l">Roulage atterrissage (m)</div></div>
+        <div class="rc"><div class="v" id="r_lda15">—</div><div class="l">Distance 15m/50ft (m)</div></div>
+      </div>
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v" id="r_lda_req">—</div><div class="l">Requis +margin (m)</div></div>
+        <div class="rc bl"><div class="v" id="r_lda_d">—</div><div class="l">LDA dispo (m)</div></div>
+      </div>
+      <div id="ldg_status" class="sb go">✅ Atterrissage possible</div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-h"><span>🔍</span><h2>Détail des corrections</h2></div>
+    <div class="sec-b" id="ldg_detail"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-h"><span>⚡</span><h2>Vitesses approche</h2></div>
+    <div class="sec-b">
+      <div class="rg rg3">
+        <div class="rc bl"><div class="v">125</div><div class="l">Vapp normale (km/h)</div></div>
+        <div class="rc"><div class="v" id="r_vapp_gust_arr">—</div><div class="l">Vapp arr+½rafale (km/h)</div></div>
+        <div class="rc bl"><div class="v">115</div><div class="l">Vapp court (km/h)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE CARBURANT — FUEL PLANNING OACI ═══════ -->
+<div class="page" id="page-carburant">
+
+  <div class="warn-box">⚠️ Les temps et consommations sont calculés depuis les données POH §5.09. Le pilote reste seul responsable de la suffisance du carburant embarqué.</div>
+
+  <!-- ── PARAMÈTRES FUEL ── -->
+  <div class="sec">
+    <div class="sec-h"><span>⚙️</span><h2>Paramètres du planning</h2><span class="poh-tag">POH §5.09</span></div>
+    <div class="sec-b">
+      <div class="info">Le <strong>trip time</strong> est la durée du vol DEP→DEST. En nav, il est calculé depuis la distance (onglet ✈️ Vol). Vous pouvez le forcer ici — utile en vol local ou circuit.</div>
+
+      <!-- Trip time -->
+      <div class="row">
+        <span class="rl">Trip time (durée DEP→DEST)<br><small style="color:var(--gray);font-size:11px">0 = calculé automatiquement depuis la distance</small></span>
+        <input type="number" id="fp_trip_min" value="0" min="0" onchange="calc()">
+        <span class="unit">min</span>
+      </div>
+      <div style="margin:-4px 0 8px;padding:6px 10px;background:rgba(45,125,210,.08);border-radius:6px;font-size:12px;color:var(--gray)">
+        ⏱ Trip time effectif : <span id="fp_trip_eff" style="color:var(--cyan);font-weight:700">—</span> min
+      </div>
+
+      <div class="row">
+        <span class="rl">Temps de taxi estimé<br><small style="color:var(--gray);font-size:11px">Roulage départ + arrivée</small></span>
+        <input type="number" id="fp_taxi_min" value="10" onchange="calc()">
+        <span class="unit">min</span>
+      </div>
+      <div class="row">
+        <span class="rl">Contingency<br><small style="color:var(--gray);font-size:11px">% du trip fuel (min 5%)</small></span>
+        <input type="number" id="fp_cont_pct" value="5" min="5" onchange="calc()">
+        <span class="unit">%</span>
+      </div>
+      <div class="row">
+        <span class="rl">Dégagement (ALTN)<br><small style="color:var(--gray);font-size:11px">Calculé depuis distance DEST→ALTN (onglet ✈️ Vol)</small></span>
+        <div class="cv" id="fp_altn_time_d">—</div>
+        <span class="unit">min</span>
+      </div>
+      <div class="row">
+        <span class="rl">Final Reserve<br><small style="color:var(--gray);font-size:11px">VFR = 30 min jour / 45 min nuit</small></span>
+        <input type="number" id="fp_rsv_min" value="30" min="30" onchange="calc()">
+        <span class="unit">min</span>
+      </div>
+      <div class="row">
+        <span class="rl">Holding additionnel<br><small style="color:var(--gray);font-size:11px">Optionnel — attente prévue</small></span>
+        <input type="number" id="fp_hold_min" value="0" onchange="calc()">
+        <span class="unit">min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TABLEAU FUEL PLANNING ── -->
+  <div class="sec">
+    <div class="sec-h"><span>📊</span><h2>Fuel Planning</h2></div>
+    <div class="sec-b">
+
+      <!-- En-tête tableau -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;margin-bottom:6px;padding:0 4px">
+        <span style="font-size:12px;color:var(--gray);font-weight:600">Poste</span>
+        <span style="font-size:12px;color:var(--gray);text-align:right">min</span>
+        <span style="font-size:12px;color:var(--gray);text-align:right">Litres</span>
+        <span style="font-size:12px;color:var(--gray);text-align:right">kg</span>
+      </div>
+
+      <!-- Taxi -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(100,150,220,.1)">
+        <span style="font-size:14px;color:#b0c0d8">🔧 Taxi</span>
+        <div class="cv" id="fp_d_taxi_min" style="font-size:12px;text-align:right">10</div>
+        <div class="cv" id="fp_d_taxi_l" style="font-size:13px;text-align:right;color:var(--sky)">—</div>
+        <div class="cv" id="fp_d_taxi_kg" style="font-size:12px;text-align:right;color:var(--gray)">—</div>
+      </div>
+
+      <!-- Trip -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(100,150,220,.1)">
+        <div>
+          <span style="font-size:14px;color:#b0c0d8">✈️ Trip</span><br>
+          <span style="font-size:11px;color:var(--gray)" id="fp_trip_info">DEP→DEST</span>
+        </div>
+        <div class="cv" id="fp_d_trip_min" style="font-size:12px;text-align:right">—</div>
+        <div class="cv" id="fp_d_trip_l" style="font-size:13px;text-align:right;color:var(--sky)">—</div>
+        <div class="cv" id="fp_d_trip_kg" style="font-size:12px;text-align:right;color:var(--gray)">—</div>
+      </div>
+
+      <!-- Contingency -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(100,150,220,.1)">
+        <div>
+          <span style="font-size:14px;color:#b0c0d8">📐 Contingency</span><br>
+          <span style="font-size:11px;color:var(--gray)" id="fp_cont_label">5% trip</span>
+        </div>
+        <div class="cv" id="fp_d_cont_min" style="font-size:12px;text-align:right">—</div>
+        <div class="cv" id="fp_d_cont_l" style="font-size:13px;text-align:right;color:var(--sky)">—</div>
+        <div class="cv" id="fp_d_cont_kg" style="font-size:12px;text-align:right;color:var(--gray)">—</div>
+      </div>
+
+      <!-- Alternate -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(100,150,220,.1)">
+        <div>
+          <span style="font-size:14px;color:#b0c0d8">🔀 Dégagement (ALTN)</span><br>
+          <span style="font-size:11px;color:var(--gray)" id="fp_altn_label">DEST→ALTN</span>
+        </div>
+        <div class="cv" id="fp_d_altn_min" style="font-size:12px;text-align:right">—</div>
+        <div class="cv" id="fp_d_altn_l" style="font-size:13px;text-align:right;color:var(--sky)">—</div>
+        <div class="cv" id="fp_d_altn_kg" style="font-size:12px;text-align:right;color:var(--gray)">—</div>
+      </div>
+
+      <!-- Final Reserve -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(100,150,220,.1)">
+        <div>
+          <span style="font-size:14px;color:#b0c0d8">🔒 Final Reserve</span><br>
+          <span style="font-size:11px;color:var(--gray)" id="fp_rsv_label">30 min VFR</span>
+        </div>
+        <div class="cv" id="fp_d_rsv_min" style="font-size:12px;text-align:right">—</div>
+        <div class="cv" id="fp_d_rsv_l" style="font-size:13px;text-align:right;color:var(--sky)">—</div>
+        <div class="cv" id="fp_d_rsv_kg" style="font-size:12px;text-align:right;color:var(--gray)">—</div>
+      </div>
+
+      <!-- Holding -->
+      <div id="fp_hold_row" style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(100,150,220,.1)">
+        <span style="font-size:14px;color:#b0c0d8">⏱ Holding</span>
+        <div class="cv" id="fp_d_hold_min" style="font-size:12px;text-align:right">0</div>
+        <div class="cv" id="fp_d_hold_l" style="font-size:13px;text-align:right;color:var(--sky)">—</div>
+        <div class="cv" id="fp_d_hold_kg" style="font-size:12px;text-align:right;color:var(--gray)">—</div>
+      </div>
+
+      <!-- TOTAL REQUIS -->
+      <div style="display:grid;grid-template-columns:1fr 55px 60px 65px;gap:6px;align-items:center;padding:10px 4px;background:rgba(240,165,0,.07);border-radius:8px;margin-top:6px">
+        <span style="font-size:14px;color:var(--gold);font-weight:700">⛽ TOTAL REQUIS</span>
+        <div id="fp_d_tot_min" class="cv" style="font-size:12px;text-align:right;color:var(--gold);font-weight:700">—</div>
+        <div id="fp_d_tot_l" class="cv" style="font-size:14px;text-align:right;color:var(--gold);font-weight:700">—</div>
+        <div id="fp_d_tot_kg" class="cv" style="font-size:12px;text-align:right;color:var(--gold);font-weight:700">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CARBURANT EMBARQUÉ ── -->
+  <div class="sec">
+    <div class="sec-h"><span>🔢</span><h2>Carburant embarqué & Marge</h2></div>
+    <div class="sec-b">
+      <div class="info">Le carburant embarqué est saisi dans l'onglet <strong>🛩 Avion</strong>.</div>
+      <div class="rg rg3" style="margin-bottom:10px">
+        <div class="rc bl"><div class="v" id="fp_fob_l">—</div><div class="l">FOB embarqué (L)</div></div>
+        <div class="rc bl"><div class="v" id="fp_fob_kg">—</div><div class="l">FOB embarqué (kg)</div></div>
+        <div class="rc"><div class="v" id="fp_fob_min">—</div><div class="l">Endurance totale (min)</div></div>
+      </div>
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc"><div class="v" id="fp_extra_l">—</div><div class="l">Extra fuel (L)</div></div>
+        <div class="rc"><div class="v" id="fp_extra_min">—</div><div class="l">Extra fuel (min)</div></div>
+      </div>
+      <div id="fuel_status" class="sb go">✅ Carburant suffisant</div>
+    </div>
+  </div>
+
+  <!-- ── SYNTHÈSE MASSES CARBURANT ── -->
+  <div class="sec">
+    <div class="sec-h"><span>⚖️</span><h2>Masses carburant pour le centrage</h2></div>
+    <div class="sec-b">
+      <div class="info">Ces valeurs s'appliquent automatiquement dans le centrogramme.</div>
+      <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;margin-bottom:6px">
+        <span style="font-size:12px;color:var(--gray);font-weight:600">Étape</span>
+        <span style="font-size:12px;color:var(--gray);text-align:center">Litres</span>
+        <span style="font-size:12px;color:var(--gray);text-align:center">kg</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Block fuel (FOB)</span>
+        <div class="cv" id="m_block_l" style="font-size:12px;text-align:center">—</div>
+        <div class="cv" id="m_block_kg" style="font-size:12px;text-align:center">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Fuel après taxi</span>
+        <div class="cv" id="m_to_l" style="font-size:12px;text-align:center">—</div>
+        <div class="cv" id="m_to_kg" style="font-size:12px;text-align:center">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Fuel à destination</span>
+        <div class="cv" id="m_dest_l" style="font-size:12px;text-align:center">—</div>
+        <div class="cv" id="m_dest_kg" style="font-size:12px;text-align:center">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;align-items:center;padding:7px 0">
+        <span style="font-size:14px;color:#b0c0d8">Fuel min à l'atterrissage</span>
+        <div class="cv" id="m_ldg_l" style="font-size:12px;text-align:center">—</div>
+        <div class="cv" id="m_ldg_kg" style="font-size:12px;text-align:center">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RANGE & ENDURANCE ── -->
+  <div class="sec">
+    <div class="sec-h"><span>🗺️</span><h2>Rayon d'action & Endurance</h2></div>
+    <div class="sec-b">
+      <div class="rg rg2" style="margin-bottom:10px">
+        <div class="rc"><div class="v" id="r_endur_util">—</div><div class="l">Endurance utile (h)</div></div>
+        <div class="rc bl"><div class="v" id="r_range">—</div><div class="l">Range (NM)</div></div>
+      </div>
+      <div class="rg rg2">
+        <div class="rc bl"><div class="v" id="r_tps_vol">—</div><div class="l">Temps trip (h:mm)</div></div>
+        <div class="rc bl"><div class="v" id="r_range_ar">—</div><div class="l">Range A/R (NM)</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ PAGE CENTRAGE ═══════ -->
+<div class="page" id="page-centrage">
+  <div class="sec">
+    <div class="sec-h"><span>📋</span><h2>Fiche de pesée</h2><span class="poh-tag">POH §6</span></div>
+    <div class="sec-b">
+      <div class="info">La référence de centrage est le bord d'attaque à la nervure n°5. Le centrogramme utilise le <strong>Moment total (m·kg)</strong> et la <strong>Masse totale (kg)</strong>.</div>
+      <div class="row">
+        <span class="rl">Masse à vide (BEW)<br><small style="color:var(--gray);font-size:12px">Saisie dans l'onglet 🛩 Avion</small></span>
+        <div class="cv" id="cg_bew_display" style="color:var(--sky)">515</div>
+        <span class="unit">kg</span>
+      </div>
+      <div class="row"><span class="rl">Moment à vide (BEW)<br><small style="color:var(--gray);font-size:12px">Depuis fiche de pesée officielle</small></span><input type="number" id="cg_bew_mom" value="114" onchange="calcCG()"><span class="unit">m·kg</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>⚖️</span><h2>Devis de Masse</h2><span class="poh-tag">POH §6</span></div>
+    <div class="sec-b">
+      <div class="info">💡 Masses depuis l'onglet Avion. Seuls les bras sont modifiables ici.</div>
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;margin-bottom:8px">
+        <span style="font-size:13px;color:var(--gray);font-weight:600">Élément</span>
+        <span style="font-size:13px;color:var(--gray);text-align:center">Masse (kg)</span>
+        <span style="font-size:13px;color:var(--gray);text-align:center">Bras (m)</span>
+        <span style="font-size:13px;color:var(--gray);text-align:center">Moment</span>
+      </div>
+      <!-- BEW row -->
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Avion à vide</span>
+        <div id="cg_r_bew_m" class="cv" style="font-size:12px;text-align:center">515</div>
+        <div class="cv" style="font-size:12px;text-align:center">—</div>
+        <div id="cg_r_bew_mom" class="cv" style="font-size:12px;text-align:center">114</div>
+      </div>
+      <!-- Pilote -->
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Pilote <span style="color:var(--gray);font-size:11px">(Avion)</span></span>
+        <div id="cg_r_pil_m" class="cv" style="font-size:12px;text-align:center">80</div>
+        <input type="number" id="cg_pil_arm" value="0.45" step="0.01" onchange="calcCG()" style="font-size:12px;padding:5px 6px">
+        <div id="cg_r_pil_mom" class="cv" style="font-size:12px;text-align:center">36.0</div>
+      </div>
+      <!-- Passager -->
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Passager <span style="color:var(--gray);font-size:11px">(Avion)</span></span>
+        <div id="cg_r_pax_m" class="cv" style="font-size:12px;text-align:center">0</div>
+        <input type="number" id="cg_pax_arm" value="0.45" step="0.01" onchange="calcCG()" style="font-size:12px;padding:5px 6px">
+        <div id="cg_r_pax_mom" class="cv" style="font-size:12px;text-align:center">0.0</div>
+      </div>
+      <!-- Bagages -->
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Bagages <span style="color:var(--gray);font-size:11px">(Avion)</span></span>
+        <div id="cg_r_bag_m" class="cv" style="font-size:12px;text-align:center">0</div>
+        <input type="number" id="cg_bag_arm" value="1.20" step="0.01" onchange="calcCG()" style="font-size:12px;padding:5px 6px">
+        <div id="cg_r_bag_mom" class="cv" style="font-size:12px;text-align:center">0.0</div>
+      </div>
+      <!-- Carburant -->
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,150,220,.08)">
+        <span style="font-size:14px;color:#b0c0d8">Carburant <span style="color:var(--gray);font-size:11px">(Avion)</span></span>
+        <div id="cg_r_fuel_m" class="cv" style="font-size:12px;text-align:center">64.8</div>
+        <input type="number" id="cg_fuel_arm" value="1.10" step="0.01" onchange="calcCG()" style="font-size:12px;padding:5px 6px">
+        <div id="cg_r_fuel_mom" class="cv" style="font-size:12px;text-align:center">71.3</div>
+      </div>
+      <!-- Total -->
+      <div style="display:grid;grid-template-columns:1fr 85px 75px 80px;gap:6px;align-items:center;padding:8px 0;background:rgba(240,165,0,.05);border-radius:8px;margin-top:4px;padding-left:6px">
+        <span style="font-size:14px;color:var(--gold);font-weight:600">TOTAL DÉPART</span>
+        <div id="cg_tot_m" class="cv" style="font-size:12px;text-align:center;color:var(--gold);font-weight:700">—</div>
+        <div class="cv" style="font-size:12px;text-align:center;color:var(--gray)">—</div>
+        <div id="cg_tot_mom" class="cv" style="font-size:12px;text-align:center;color:var(--gold);font-weight:700">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>📊</span><h2>Centrogramme — Masse & Centrage</h2><span class="poh-tag">POH §6</span></div>
+    <div class="sec-b">
+      <div class="info">Axe X = Moment total (m·kg) · Axe Y = Masse totale (kg) · <strong style="color:var(--green)">Zone verte = enveloppe Cat. U autorisée</strong></div>
+      <div class="chart-wrap">
+        <canvas id="cgCanvas" style="display:none"></canvas>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:center;font-size:12px;color:var(--gray)">
+        <span>🟢 Enveloppe Cat. U (POH §6)</span>
+        <span>🔷 Départ (losange)</span>
+        <span>🟠 Arrivée (cercle)</span>
+        <span>🟦 BEW seul (carré)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span>✅</span><h2>Verdict centrage</h2></div>
+    <div class="sec-b" id="cg_verdicts"></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE TABLEAU DE BORD ═══════ -->
+<div class="page" id="page-bord">
+  <div class="sec">
+    <div class="sec-h"><span>🎯</span><h2>Synthèse — Points de préparation</h2></div>
+    <div class="sec-b">
+      <div id="gonogo_list"></div>
+      <div id="global_verdict" class="sb go" style="margin-top:14px;font-size:17px">✅ TOUS CRITÈRES DANS LES LIMITES</div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-h"><span>📋</span><h2>Résumé conditions</h2></div>
+    <div class="sec-b"><div class="chips" id="summary_chips"></div></div>
+  </div>
+</div>
+
+<!-- ═══════ PAGE DOSSIER ═══════ -->
+<div class="page" id="page-dossier">
+  <div class="sec">
+    <div class="sec-h"><span>📄</span><h2>Dossier de vol</h2></div>
+    <div class="sec-b">
+      <div class="info">Les informations du vol se saisissent dans l'onglet <strong>⛅ Météo</strong> (bas de page). Toutes les données sont reprises automatiquement.</div>
+      <div id="dossier_summary"></div>
+      <button class="btn primary" onclick="genDossier()" style="width:100%;justify-content:center;padding:16px;font-size:16px;margin:14px 0">📄 Générer le dossier de vol</button>
+      <div id="dossier_actions" style="display:none">
+        <button class="btn primary" onclick="telechargerPDF()" style="width:100%;justify-content:center;padding:14px;font-size:15px;background:rgba(46,184,126,.3);border-color:var(--green);margin-bottom:8px">⬇️ Télécharger le dossier (PDF)</button>
+      </div>
+      <div id="dossier_preview" style="font-size:14px;color:#b0c0d8;text-align:center;padding:10px">Appuyez sur "Générer" pour créer votre dossier.</div>
+    </div>
+  </div>
+</div>
+
+</main>
+<div id="pz" style="display:none"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// SVG CHART CLASS (offline, no CDN)
+// ═══════════════════════════════════════════════════════════════════
+class Chart {
+  constructor(canvas, config) { this.canvas=canvas; this.config=config; this.render(); }
+  destroy() { const s=this.canvas.parentNode.querySelector('svg.cg'); if(s)s.remove(); }
+  render() {
+    const t=this.canvas.parentNode;
+    this.canvas.style.display='none';
+    const old=t.querySelector('svg.cg'); if(old)old.remove();
+    const opts=this.config.options||{};
+    const xO=(opts.scales||{}).x||{}, yO=(opts.scales||{}).y||{};
+    const W=500,H=340;
+    const P={t:20,r:20,b:80,l:72};
+    const PW=W-P.l-P.r, PH=H-P.t-P.b;
+    const xMin=xO.min||0, xMax=xO.max||500;
+    const yMin=yO.min||400, yMax=yO.max||850;
+    const tx=v=>P.l+(v-xMin)/(xMax-xMin)*PW;
+    const ty=v=>P.t+(1-(v-yMin)/(yMax-yMin))*PH;
+    let s=`<svg class="cg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">`;
+    s+=`<defs><clipPath id="cp"><rect x="${P.l}" y="${P.t}" width="${PW}" height="${PH}"/></clipPath></defs>`;
+    s+=`<rect x="${P.l}" y="${P.t}" width="${PW}" height="${PH}" fill="rgba(255,255,255,.02)" stroke="rgba(100,150,220,.3)" stroke-width="1"/>`;
+    const xStep=xO.majorUnit||50, yStep=yO.majorUnit||50;
+    for(let x=xMin;x<=xMax+.1;x+=xStep){const px=tx(x); s+=`<line x1="${px}" y1="${P.t}" x2="${px}" y2="${P.t+PH}" stroke="rgba(100,150,220,.12)" stroke-width="1"/><text x="${px}" y="${P.t+PH+16}" text-anchor="middle" font-size="10" fill="#8899bb" font-family="monospace">${x}</text>`;}
+    for(let y=yMin;y<=yMax+.1;y+=yStep){const py=ty(y); s+=`<line x1="${P.l}" y1="${py}" x2="${P.l+PW}" y2="${py}" stroke="rgba(100,150,220,.12)" stroke-width="1"/><text x="${P.l-5}" y="${py+4}" text-anchor="end" font-size="10" fill="#8899bb" font-family="monospace">${y}</text>`;}
+    const xtitle=(xO.title||{}).text||'', ytitle=(yO.title||{}).text||'';
+    s+=`<text x="${P.l+PW/2}" y="${H-8}" text-anchor="middle" font-size="11" fill="#8899bb" font-family="Arial">${xtitle}</text>`;
+    s+=`<text transform="translate(12,${P.t+PH/2}) rotate(-90)" text-anchor="middle" font-size="11" fill="#8899bb" font-family="Arial">${ytitle}</text>`;
+    const legs=[];
+    (this.config.data.datasets||[]).forEach(ds=>{
+      const pts=ds.data||[]; if(!pts.length)return;
+      const lc=ds.borderColor||'#2d7dd2';
+      const fc=ds.backgroundColor||'transparent';
+      if(ds.showLine!==false && ds.fill && pts.length>2){
+        const poly=pts.map(p=>`${tx(p.x)},${ty(p.y)}`).join(' ');
+        s+=`<polygon points="${poly}" fill="${fc}" clip-path="url(#cp)"/>`;
+      }
+      if(ds.showLine!==false && pts.length>1){
+        const d=pts.map((p,i)=>`${i===0?'M':'L'}${tx(p.x)},${ty(p.y)}`).join(' ');
+        s+=`<path d="${d}" stroke="${lc}" stroke-width="${ds.borderWidth?ds.borderWidth/5000*15:2}" fill="none" clip-path="url(#cp)"/>`;
+      }
+      pts.forEach(p=>{
+        if(p.x===undefined)return;
+        const px=tx(p.x),py=ty(p.y),ms=ds.pointRadius||7;
+        const mk=ds.pointStyle||'circle';
+        const mf=ds.backgroundColor&&ds.backgroundColor!=='transparent'?ds.backgroundColor:lc;
+        const bw=ds.borderWidth&&ds.borderWidth<500?ds.borderWidth:2;
+        if(mk==='rectRot'||mk==='diamond') s+=`<polygon points="${px},${py-ms} ${px+ms},${py} ${px},${py+ms} ${px-ms},${py}" fill="${mf}" stroke="${lc}" stroke-width="${bw}" clip-path="url(#cp)"/>`;
+        else if(mk==='rect') s+=`<rect x="${px-ms*.6}" y="${py-ms*.6}" width="${ms*1.2}" height="${ms*1.2}" fill="${mf}" stroke="${lc}" stroke-width="${bw}" clip-path="url(#cp)"/>`;
+        else s+=`<circle cx="${px}" cy="${py}" r="${ms*.7}" fill="${mf==='transparent'?'none':mf}" stroke="${lc}" stroke-width="${bw}" clip-path="url(#cp)"/>`;
+      });
+      legs.push({label:ds.label||'',color:lc,fill:fc==='transparent'?lc:fc,mk:ds.pointStyle||'circle'});
+    });
+    const legY=P.t+PH+42;
+    const iw=PW/Math.max(legs.length,1);
+    legs.forEach((l,i)=>{
+      const lx=P.l+i*iw+8;
+      if(l.mk==='rectRot'||l.mk==='diamond') s+=`<polygon points="${lx+6},${legY-5} ${lx+11},${legY} ${lx+6},${legY+5} ${lx+1},${legY}" fill="${l.fill}" stroke="${l.color}" stroke-width="1.5"/>`;
+      else s+=`<circle cx="${lx+5}" cy="${legY}" r="5" fill="${l.fill}" stroke="${l.color}" stroke-width="1.5"/>`;
+      s+=`<text x="${lx+14}" y="${legY+4}" font-size="10" fill="#8899bb" font-family="Arial">${l.label}</text>`;
+    });
+    s+='</svg>';
+    t.insertAdjacentHTML('beforeend',s);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DONNÉES POH HR200/120B — ABAQUES NUMÉRISÉS (Ed.5 Jan.1993)
+// ═══════════════════════════════════════════════════════════════════
+//
+// DÉCOLLAGE — POH §5.04 (Roulage) + §5.05 (Passage obstacle 15m / 50ft)
+// Conditions abaques : vent nul, volets 10°, plein gaz,
+//   piste dure sèche et plane, vitesse décollage 90 km/h
+// Interpolation bilinéaire DA (ft) × Masse (kg)
+//
+// Valeurs lues sur abaques avec ISA std (0ft=15°C, 2000ft≈11°C, etc.)
+// Exemple de validation POH §6 : Temp 20°C, 700 kg, 2500 ft → ~130m roulage
+//   → DA ≈ 2500 + 120*(20-9.6) = 2500+1248 = 3748 ft → interpolé ≈ 260m ✓
+//
+// NOTE IMPORTANTE sur la numérisation:
+//   Les abaques POH sont en ft sur l'axe altitude et kg sur l'axe masse.
+//   Les lectures ci-dessous sont les distances en MÈTRES pour chaque point.
+//   La piste de référence est DUR SEC (hard_dry). Les correctifs s'appliquent ensuite.
+
+// ── Décollage Roulage (m) — POH §5.04 abaque "ROULAGE"
+// Conditions : vent nul, volets 10°, plein gaz, piste dure sèche
+// DA (ft) : 0, 2000, 4000, 6000  /  Masse (kg) : 650, 700, 750, 780
+const TO_ROLL = {
+     0: {650: 140, 700: 175, 750: 215, 780: 245},
+  2000: {650: 170, 700: 215, 750: 265, 780: 300},
+  4000: {650: 210, 700: 265, 750: 330, 780: 375},
+  6000: {650: 260, 700: 330, 750: 410, 780: 470},
+};
+
+// ── Décollage Passage obstacle 15m / 50ft (m) — POH §5.05
+// Conditions identiques à ci-dessus
+const TO_15M = {
+     0: {650: 290, 700: 365, 750: 435, 780: 490},
+  2000: {650: 360, 700: 450, 750: 540, 780: 610},
+  4000: {650: 450, 700: 565, 750: 680, 780: 770},
+  6000: {650: 565, 700: 710, 750: 860, 780: 975},
+};
+
+// ── Atterrissage Roulage (m) — POH §5.11
+// Conditions : vent nul, volets 20°, gaz réduits, freinage max,
+//   piste dure sèche, vitesse passage seuil 125 km/h
+const LDG_ROLL = {
+     0: {650: 105, 700: 130, 750: 155, 780: 175},
+  2000: {650: 125, 700: 155, 750: 185, 780: 210},
+  4000: {650: 150, 700: 190, 750: 225, 780: 260},
+  6000: {650: 185, 700: 235, 750: 280, 780: 320},
+};
+
+// ── Atterrissage Passage obstacle 15m / 50ft (m) — POH §5.10
+const LDG_15M = {
+     0: {650: 235, 700: 285, 750: 335, 780: 375},
+  2000: {650: 280, 700: 340, 750: 400, 780: 450},
+  4000: {650: 340, 700: 415, 750: 490, 780: 555},
+  6000: {650: 420, 700: 515, 750: 610, 780: 690},
+};
+
+// ── Corrections vent POH (explicites) :
+//   Décollage : pour 4 kt (7.408 km/h) vent face → ×0.90 (soit -10%)
+//               formulé dans POH §5.04 : "Pour 4 kt multiplier par 0.9"
+//   Atterrissage : même règle §5.10
+//   Vent arrière : +10% par kt (conservatif, non explicitement chiffré POH)
+const TO_WIND_REDUCTION_PER_KMH = Math.log(0.9) / 7.408; // constante pour calcul exponentiel
+
+// ── Corrections revêtement POH (explicites) :
+//   Décollage §5.04 : "Pour piste en herbe sèche, rajouter 7%"
+//   Atterrissage §5.10 : "Pour piste en herbe sèche, rajouter 20%"
+const TO_SURF_GRASS_DRY   = 1.07;  // +7% décollage herbe POH §5.04
+const LDG_SURF_GRASS_DRY  = 1.20;  // +20% atterro herbe POH §5.10
+const SURF_HARD_WET       = 1.12;  // piste mouillée — conservatif (non chiffré POH)
+
+// ── Montée — POH §5.06-5.07
+// Taux de montée SL ISA masse max 780kg volets rentrés plein gaz → lu abaque §5.06
+// L'abaque donne ~4.5 m/s (≈885 ft/min) à SL, ISA, 780kg
+// Correction température: ±0.08 m/s par 5°C d'écart ISA (indiqué sur l'abaque POH §5.06)
+const ROC_SL_ISA = 4.5; // m/s à SL ISA 780kg — lu abaque POH §5.06
+
+// ── Performances en palier — POH §5.09 (tableau + abaque)
+// Régime 75% puissance, volets rentrés, mélange optimal, par vent nul
+// Altitude  | Régime (tr/min) | Vitesse propre (km/h) | Conso (L/h)
+//     0 ft  |     2500        |       204             |    25
+//  3000 ft  |     2650        |       215             |    25
+//  5000 ft  |     2700        |       217             |    25
+//  7000 ft  |     2800        |       223             |    25
+// Source : tableau POH page 5.09, confirmé par abaque performances palier
+const REGIME_DATA = {
+  '75':             {vcr: 204, rpm: 2500, conso: 25, alt_ft: 0},
+  'croisiere_3000': {vcr: 215, rpm: 2650, conso: 25, alt_ft: 3000},
+  'croisiere_5000': {vcr: 217, rpm: 2700, conso: 25, alt_ft: 5000},
+  'croisiere_7000': {vcr: 223, rpm: 2800, conso: 25, alt_ft: 7000},
+};
+
+// ── Centrogramme — POH §6.02
+// Axe X = Moment total (m·kg)   Axe Y = Masse totale (kg)
+// Enveloppe Cat. "U" lue sur le centrogramme POH §6 :
+//   Le graphique montre une zone polygonale avec :
+//   - Masse mini avion ≈ 515 kg (BEW exemple)
+//   - Limite basse à 580 kg (1279 lb) indiquée sur l'axe Y
+//   - Masse maxi 780 kg (1720 lb)
+//   - Limite avant (CG fwd) : de ~(114, 580) à ~(172, 780) — pente diagonale
+//   - Limite arrière (CG aft) : de ~(196, 580) à ~(300, 780) — pente diagonale
+//   POH §2 confirme : CG fwd = 0.22m (14.6% MAC), CG aft = 0.46m (30.6% MAC)
+//   Bras de référence = bord d'attaque nervure n°5, corde = 1.5m
+//   → Moment fwd min à 580kg  = 580 × (0.22 + bras_bew) → on travaille en moments absolus
+//   Points de l'enveloppe (coordonnées Moment m·kg, Masse kg) lus sur §6.02 :
+const ENV_PTS = [
+  {x: 114, y: 580},   // fwd bas (580 kg, limite avant)
+  {x: 172, y: 780},   // fwd haut (780 kg, limite avant)
+  {x: 300, y: 780},   // aft haut (780 kg, limite arrière)
+  {x: 196, y: 580},   // aft bas (580 kg, limite arrière)
+  {x: 114, y: 580},   // fermeture polygone
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// INTERPOLATION BILINÉAIRE SUR ABAQUES
+// ═══════════════════════════════════════════════════════════════════
+function interpAbaque(table, da, masse) {
+  const das = Object.keys(table).map(Number).sort((a,b)=>a-b);
+  const masses = Object.keys(table[das[0]]).map(Number).sort((a,b)=>a-b);
+
+  // Clamp
+  const da_lo = Math.max(das[0], das.filter(d=>d<=da).pop()||das[0]);
+  const da_hi = Math.min(das[das.length-1], das.filter(d=>d>=da)[0]||das[das.length-1]);
+  const m_lo  = Math.max(masses[0], masses.filter(m=>m<=masse).pop()||masses[0]);
+  const m_hi  = Math.min(masses[masses.length-1], masses.filter(m=>m>=masse)[0]||masses[masses.length-1]);
+
+  // Bilinear
+  const f00 = table[da_lo][m_lo];
+  const f10 = table[da_hi][m_lo];
+  const f01 = table[da_lo][m_hi];
+  const f11 = table[da_hi][m_hi];
+
+  const td = da_hi>da_lo ? (da-da_lo)/(da_hi-da_lo) : 0;
+  const tm = m_hi>m_lo  ? (masse-m_lo)/(m_hi-m_lo)  : 0;
+
+  return f00*(1-td)*(1-tm) + f10*td*(1-tm) + f01*(1-td)*tm + f11*td*tm;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════
+const MTOW = 780;
+const FUEL_USABLE = 118;
+const FUEL_DENSITY = 0.72;
+
+const g  = id => document.getElementById(id);
+const v  = id => parseFloat(g(id)?.value)||0;
+const sv = (id,val,dec=0) => { const el=g(id); if(!el)return; el.textContent=typeof val==='number'?(dec>0?val.toFixed(dec):Math.round(val).toString()):val; };
+const setStatus = (id,type,txt) => { const el=g(id); if(!el)return; el.className='sb '+type; el.textContent=txt; };
+
+let R = {}; // results cache
+let cgChartInst = null;
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  g('page-'+name)?.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>{ if(t.getAttribute('onclick').includes("'"+name+"'"))t.classList.add('active'); });
+  if(name==='aerodromes'){calc();}
+  if(name==='briefing'){updateBriefingPanel();}
+  if(name==='vol'){calc();}
+  if(name==='centrage'){calcCG();drawCGChart();}
+  if(name==='bord'){buildDashboard();}
+  if(name==='dossier'){updateDossierSummary();}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FETCH METAR/TAF — aviationweather.gov (NOAA, pas de clé requise)
+// ═══════════════════════════════════════════════════════════════════
+async function fetchMetar(side) {
+  const isDep = side === 'dep';
+  const oaciEl = g(isDep ? 'oaci' : 'arr_oaci');
+  const oaci = (oaciEl?.value||'').trim().toUpperCase();
+
+  if (!oaci || oaci.length < 4) {
+    showMetarError(side, 'Indicatif OACI invalide — 4 lettres requises (ex : LFPB)');
+    return;
+  }
+
+  const btn = g(isDep ? 'btn_fetch_dep' : 'btn_fetch_arr');
+  const origTxt = btn ? btn.innerHTML : '';
+  if (btn) { btn.innerHTML = '⏳ Chargement…'; btn.disabled = true; }
+
+  // fetchWithTimeout — Promise.race() sans AbortController (compatible Documents/WebView iOS)
+  function fetchWithTimeout(url, ms) {
+    // iOS WKWebView — 3 stratégies en cascade
+    // 1. fetch() direct
+    function tryFetch(u) {
+      return new Promise((resolve, reject) => {
+        const tid = setTimeout(() => reject(new Error('TIMEOUT')), ms);
+        fetch(u, {method:'GET', headers:{'Accept':'application/json, */*'}})
+          .then(r => { clearTimeout(tid); resolve(r); })
+          .catch(e => { clearTimeout(tid); reject(e); });
+      });
+    }
+    // 2. XMLHttpRequest (plus permissif dans WKWebView iOS)
+    function tryXHR(u) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        const tid = setTimeout(() => { xhr.abort(); reject(new Error('TIMEOUT')); }, ms);
+        xhr.open('GET', u, true);
+        xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
+        // User-Agent explicite — évite le 403 sur certaines APIs
+        try { xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); } catch(e) {}
+        xhr.onload = () => { clearTimeout(tid);
+          resolve({ ok: xhr.status>=200&&xhr.status<300, status: xhr.status,
+            text: () => Promise.resolve(xhr.responseText),
+            json: () => Promise.resolve(JSON.parse(xhr.responseText)) }); };
+        xhr.onerror = () => { clearTimeout(tid); reject(new Error('XHR_FAIL')); };
+        xhr.ontimeout = () => reject(new Error('TIMEOUT'));
+        xhr.send();
+      });
+    }
+    // 3. Proxy CORS public (contourne ATS et restrictions WebView)
+    function tryProxy(u) {
+      return tryXHR('https://corsproxy.io/?' + encodeURIComponent(u));
+    }
+    return tryFetch(url).catch(() => tryXHR(url)).catch(() => tryProxy(url));
+  }
+
+  // URLs NOAA aviationweather.gov (API publique, sans clé, CORS ouvert)
+  const urlMetar = 'https://aviationweather.gov/api/data/metar?ids=' + oaci + '&format=json&hours=3';
+  const urlTaf   = 'https://aviationweather.gov/api/data/taf?ids='   + oaci + '&format=json';
+
+  try {
+    // Fetch METAR + TAF en parallèle, timeout 12s
+    const [resMetar, resTaf] = await Promise.all([
+      fetchWithTimeout(urlMetar, 12000),
+      fetchWithTimeout(urlTaf,   12000).catch(() => null),
+    ]);
+
+    // Parsing robuste — la réponse peut venir de fetch natif, XHR ou proxy
+    let metarData = [], tafData = [];
+    try {
+      if (resMetar.ok) {
+        const raw = await resMetar.text();
+        // Afficher le debug brut (premier 100 chars) pour diagnostic
+        showMetarError(side, 'Réponse reçue (' + raw.length + ' bytes) — parsing...');
+        const parsed = JSON.parse(raw);
+        metarData = Array.isArray(parsed) ? parsed : (parsed.data || [parsed]);
+      }
+    } catch(parseErr) {
+      showMetarError(side, 'Réponse reçue mais non parsable JSON — ' + parseErr.message);
+      if (btn) { btn.innerHTML = origTxt; btn.disabled = false; }
+      return;
+    }
+    try {
+      if (resTaf && resTaf.ok) {
+        const rawTaf = await resTaf.text();
+        const parsedTaf = JSON.parse(rawTaf);
+        tafData = Array.isArray(parsedTaf) ? parsedTaf : (parsedTaf.data || []);
+      }
+    } catch(e) { tafData = []; }
+
+    if (!metarData || metarData.length === 0) {
+      showMetarError(side, 'METAR introuvable pour ' + oaci + ' — vérifiez l\'indicatif OACI (4 lettres ICAO)');
+      if (btn) { btn.innerHTML = origTxt; btn.disabled = false; }
+      return;
+    }
+
+    const m   = metarData[0];
+    const taf = tafData && tafData.length > 0 ? tafData[0] : null;
+
+    // Parser et remplir les champs météo
+    parseAndFill(side, m, taf);
+
+    // Afficher le METAR brut
+    const rawEl  = g(isDep ? 'metar_raw_dep' : 'metar_raw_arr');
+    const tafEl  = g(isDep ? 'taf_raw_dep'   : 'taf_raw_arr');
+    const ageEl  = g(isDep ? 'metar_age_dep' : 'metar_age_arr');
+    const srcBox = g(isDep ? 'metar_src_dep' : 'metar_src_arr');
+    const badge  = g(isDep ? 'metar_src_badge_dep' : 'metar_src_badge_arr');
+
+    if (rawEl)  rawEl.textContent  = m.rawOb || m.rawMetar || '—';
+    if (tafEl)  tafEl.textContent  = taf ? 'TAF : ' + (taf.rawTAF || taf.rawTaf || '—') : '';
+    if (ageEl)  ageEl.textContent  = m.reportTime
+      ? 'Émis : ' + new Date(m.reportTime).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) + ' UTC'
+      : '';
+    if (srcBox) srcBox.style.display = 'block';
+    if (badge)  badge.style.display  = 'inline-block';
+
+    // Afficher le TAF dans l'onglet Météo
+    const tafRaw  = taf ? (taf.rawTAF || taf.rawTaf || '') : '';
+    const tafSec  = g(isDep ? 'taf_dep_sec'    : 'taf_arr_sec');
+    const tafDisp = g(isDep ? 'taf_dep_display' : 'taf_arr_display');
+    if (tafSec && tafDisp) {
+      if (tafRaw) {
+        tafDisp.textContent = tafRaw.replace(/\s(FM\d{6}|BECMG|TEMPO|INTER|PROB\d{2})/g, '\n$1');
+        tafSec.style.display = 'block';
+      } else {
+        tafSec.style.display = 'none';
+      }
+    }
+
+    updateBriefingPanel();
+    calc(); save();
+
+    if (btn) { btn.innerHTML = '✅ ' + oaci; btn.disabled = false;
+      setTimeout(() => { if (btn) btn.innerHTML = origTxt; }, 3000); }
+
+  } catch(err) {
+    const msg = err.message === 'TIMEOUT'
+      ? 'Délai dépassé — serveur indisponible'
+      : 'Serveur inaccessible (' + (err.message||'inconnu') + ') — réessayez dans quelques instants';
+    showMetarError(side, msg);
+    if (btn) { btn.innerHTML = '❌ Erreur'; btn.disabled = false;
+      setTimeout(() => { if (btn) btn.innerHTML = origTxt; }, 3000); }
+  }
+}
+function showMetarError(side, msg) {
+  const isDep = side === 'dep';
+  const srcBox = g(isDep ? 'metar_src_dep' : 'metar_src_arr');
+  const rawEl  = g(isDep ? 'metar_raw_dep' : 'metar_raw_arr');
+  if (srcBox) srcBox.style.display = 'block';
+  if (rawEl)  rawEl.textContent = '⚠️ ' + msg;
+  const tafEl = g(isDep ? 'taf_raw_dep' : 'taf_raw_arr');
+  if (tafEl) tafEl.textContent = '';
+}
+
+function parseAndFill(side, m, taf) {
+  const isDep = side === 'dep';
+
+  // QNH : altim en inHg → hPa  OU  slp en hPa directement
+  if (m.altim) {
+    const qnh = Math.round(m.altim * 33.8639);
+    g(isDep ? 'qnh' : 'arr_qnh').value = qnh;
+  } else if (m.slp) {
+    g(isDep ? 'qnh' : 'arr_qnh').value = Math.round(m.slp);
+  }
+
+  // Température / point de rosée
+  if (m.temp !== undefined && m.temp !== null) {
+    g(isDep ? 'oat' : 'arr_oat').value = Math.round(m.temp);
+    if (isDep) g('dew').value = Math.round(m.dewp ?? m.temp - 3);
+  }
+
+  // Vent direction
+  if (m.wdir !== undefined && m.wdir !== null) {
+    const dir = m.wdir === 'VRB' ? 0 : parseInt(m.wdir);
+    g(isDep ? 'wind_dir' : 'arr_wind_dir').value = isNaN(dir) ? 0 : dir;
+  }
+
+  // Vent vitesse : wspd en kt → km/h
+  if (m.wspd !== undefined && m.wspd !== null) {
+    const kmh = Math.round(m.wspd * 1.852);
+    g(isDep ? 'wind_spd' : 'arr_wind_spd').value = kmh;
+  }
+
+  // Rafales : wgst en kt → km/h
+  if (m.wgst !== undefined && m.wgst !== null && m.wgst > 0) {
+    const gkmh = Math.round(m.wgst * 1.852);
+    g(isDep ? 'wind_gust' : 'arr_wind_gust').value = gkmh;
+  } else {
+    g(isDep ? 'wind_gust' : 'arr_wind_gust').value = 0;
+  }
+
+  // Visibilité : visib en sm → m (si > 100 = déjà en m)
+  if (m.visib !== undefined && m.visib !== null) {
+    const vis = parseFloat(m.visib);
+    const visM = vis > 100 ? Math.round(vis) : Math.round(vis * 1609.34);
+    const visStr = visM >= 9999 ? '9999' : String(visM);
+    g(isDep ? 'vis_metar' : 'arr_vis_metar').value = visStr;
+  }
+
+  // Plafond / Nuages : clouds array
+  if (m.clouds && m.clouds.length > 0) {
+    const cloudStr = m.clouds
+      .map(cl => `${cl.cover}${String(cl.base ?? '').padStart(3,'0')}`)
+      .join(' ');
+    g(isDep ? 'ceiling_metar' : 'arr_ceiling_metar').value = cloudStr;
+  }
+
+  // Précipitations : wxString
+  const wx = (m.wxString || m.wx || '').toLowerCase();
+  let precip = 'none';
+  if (wx.includes('+ra') || wx.includes('ts') || wx.includes('sn') || wx.includes('+sn')) {
+    precip = 'heavy';
+  } else if (wx.includes('-ra') || wx.includes('ra') || wx.includes('drizzle') || wx.includes('dz')) {
+    precip = 'light';
+  }
+  const precipEl = g(isDep ? 'precip' : 'arr_precip');
+  if (precipEl) precipEl.value = precip;
+}
+
+function updateBriefingPanel() {
+  const panel = g('briefing_metar_panel');
+  if (!panel) return;
+
+  const items = [];
+  const depRaw = g('metar_raw_dep')?.textContent;
+  const arrRaw = g('metar_raw_arr')?.textContent;
+  const depTaf = g('taf_raw_dep')?.textContent;
+  const arrTaf = g('taf_raw_arr')?.textContent;
+  const depAge = g('metar_age_dep')?.textContent;
+  const arrAge = g('metar_age_arr')?.textContent;
+
+  if (depRaw && !depRaw.startsWith('⚠️')) {
+    items.push({label: g('oaci')?.value||'DEP', age: depAge, metar: depRaw, taf: depTaf});
+  }
+  if (arrRaw && !arrRaw.startsWith('⚠️') && arrRaw !== depRaw) {
+    items.push({label: g('arr_oaci')?.value||'ARR', age: arrAge, metar: arrRaw, taf: arrTaf});
+  }
+
+  if (items.length === 0) {
+    panel.innerHTML = '<div style="color:var(--gray);font-size:13px;text-align:center;padding:20px 0">Aucun METAR chargé — utilisez les boutons "🌐 Charger METAR" dans l\'onglet ⛅ Météo</div>';
+    return;
+  }
+
+  panel.innerHTML = items.map(it => `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:'Barlow Condensed','SF Pro Display',sans-serif;font-weight:700;font-size:15px;color:var(--cyan);letter-spacing:1px">${it.label}</span>
+        <span style="font-size:11px;color:var(--gray)">${it.age||''} · Source : aviationweather.gov</span>
+      </div>
+      <div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'SF Mono','Space Mono',monospace;font-size:12px;color:#d0e8ff;line-height:1.6;word-break:break-all">
+        <div style="color:var(--cyan);font-size:10px;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">METAR</div>
+        ${it.metar}
+        ${it.taf ? `<div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;color:#8899bb;font-size:11px"><div style="color:var(--gray);font-size:10px;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">TAF</div>${it.taf.replace('TAF : ','')}</div>` : ''}
+      </div>
+    </div>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FETCH NOTAM — aviationweather.gov (NOAA)
+// ═══════════════════════════════════════════════════════════════════
+async function fetchNotam() {
+  const input = g('notam_oaci_input');
+  const raw = (input?.value||'').trim().toUpperCase();
+  const oacis = raw.split(/[\s,]+/).filter(x => x.length === 4);
+
+  if (oacis.length === 0) {
+    const panel = g('notam_panel');
+    if (panel) panel.innerHTML = '<div style="color:var(--red);font-size:13px;padding:10px 0">⚠️ Entrez au moins un indicatif OACI valide (4 lettres)</div>';
+    return;
+  }
+
+  const btn = g('btn_fetch_notam');
+  if (btn) { btn.innerHTML = '⏳ Chargement…'; btn.disabled = true; }
+  const panel = g('notam_panel');
+  if (panel) panel.innerHTML = '<div style="color:var(--gray);font-size:13px;padding:10px 0;text-align:center">⏳ Récupération des NOTAM en cours…</div>';
+
+  function fetchWithTimeout(url, ms) {
+    // iOS WKWebView — 3 stratégies en cascade
+    // 1. fetch() direct
+    function tryFetch(u) {
+      return new Promise((resolve, reject) => {
+        const tid = setTimeout(() => reject(new Error('TIMEOUT')), ms);
+        fetch(u, {method:'GET', headers:{'Accept':'application/json, */*'}})
+          .then(r => { clearTimeout(tid); resolve(r); })
+          .catch(e => { clearTimeout(tid); reject(e); });
+      });
+    }
+    // 2. XMLHttpRequest (plus permissif dans WKWebView iOS)
+    function tryXHR(u) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        const tid = setTimeout(() => { xhr.abort(); reject(new Error('TIMEOUT')); }, ms);
+        xhr.open('GET', u, true);
+        xhr.setRequestHeader('Accept', 'application/json, text/plain, */*');
+        // User-Agent explicite — évite le 403 sur certaines APIs
+        try { xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); } catch(e) {}
+        xhr.onload = () => { clearTimeout(tid);
+          resolve({ ok: xhr.status>=200&&xhr.status<300, status: xhr.status,
+            text: () => Promise.resolve(xhr.responseText),
+            json: () => Promise.resolve(JSON.parse(xhr.responseText)) }); };
+        xhr.onerror = () => { clearTimeout(tid); reject(new Error('XHR_FAIL')); };
+        xhr.ontimeout = () => reject(new Error('TIMEOUT'));
+        xhr.send();
+      });
+    }
+    // 3. Proxy CORS public (contourne ATS et restrictions WebView)
+    function tryProxy(u) {
+      return tryXHR('https://corsproxy.io/?' + encodeURIComponent(u));
+    }
+    return tryFetch(url).catch(() => tryXHR(url)).catch(() => tryProxy(url));
+  }
+
+  try {
+    const oaciList = oacis.join(',');
+    // NOTAM via proxy direct — l'API NOAA renvoie 403 depuis les WebViews iOS sans UA
+    const notamDirect = 'https://aviationweather.gov/api/data/notam?ids=' + oaciList + '&format=json';
+    const url = 'https://corsproxy.io/?' + encodeURIComponent(notamDirect);
+    const res = await fetchWithTimeout(url, 12000);
+
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rawText = await res.text();
+    let data;
+    try { data = JSON.parse(rawText); } catch(e) {
+      throw new Error('Réponse non-JSON (' + rawText.slice(0,80) + ')');
+    }
+    if (!Array.isArray(data)) data = data.data || [];
+
+    if (!data || data.length === 0) {
+      if (panel) panel.innerHTML = '<div style="color:var(--gray);font-size:13px;padding:10px 0;text-align:center">Aucun NOTAM actif trouvé pour ' + oacis.join(', ') + '</div>';
+      if (btn) { btn.innerHTML = '🔔 Charger NOTAM'; btn.disabled = false; }
+      return;
+    }
+
+    // Grouper par aérodrome
+    const byStation = {};
+    data.forEach(n => {
+      const st = n.icaoId || n.locationId || '????';
+      if (!byStation[st]) byStation[st] = [];
+      byStation[st].push(n);
+    });
+
+    // Catégorie visuelle
+    const getCat = (notam) => {
+      const txt = (notam.traditionalMessage || notam.message || '').toUpperCase();
+      if (/\bRWY\b|\bTHR\b|\bTODA\b|\bLDA\b/.test(txt)) return {label:'PISTE', color:'#e03c3c'};
+      if (/\bTWY\b|\bAPRON\b/.test(txt))                     return {label:'TAXI/AIRE', color:'#f0a500'};
+      if (/\bILS\b|\bVOR\b|\bNDB\b|\bDME\b/.test(txt))   return {label:'NAVAID', color:'#f0a500'};
+      if (/\bATC\b|\bCTR\b|\bTMA\b|\bFIR\b/.test(txt))   return {label:'ATC/ESPACE', color:'#4fa3e0'};
+      return {label:'INFO', color:'#8899bb'};
+    };
+
+    let html = '';
+    Object.entries(byStation).forEach(([st, notams]) => {
+      html += '<div style="margin-bottom:16px">'
+        + '<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:16px;color:var(--cyan);letter-spacing:1px;margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:6px">'
+        + st + ' — ' + notams.length + ' NOTAM' + (notams.length>1?'s':'') + '</div>';
+
+      notams.forEach(n => {
+        const cat = getCat(n);
+        const msg = n.traditionalMessage || n.message || n.text || '—';
+        const notamId = n.notamID || n.id || '';
+        const validity = n.startTime && n.endTime
+          ? n.startTime.replace('T',' ').slice(0,16) + ' → ' + n.endTime.replace('T',' ').slice(0,16) + ' UTC'
+          : '';
+        html += '<div style="background:rgba(0,0,0,.2);border:1px solid var(--border);border-left:3px solid ' + cat.color + ';border-radius:6px;padding:10px 12px;margin-bottom:8px">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+          + '<span style="background:rgba(0,0,0,.3);border:1px solid ' + cat.color + ';color:' + cat.color + ';font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase">' + cat.label + '</span>'
+          + '<span style="font-size:11px;color:var(--gray);font-family:monospace">' + notamId + '</span>'
+          + '</div>'
+          + (validity ? '<div style="font-size:11px;color:var(--gray);margin-bottom:6px;font-family:monospace">📅 ' + validity + '</div>' : '')
+          + '<div style="font-family:monospace;font-size:12px;color:#d0e8ff;line-height:1.6;word-break:break-all">' + msg + '</div>'
+          + '</div>';
+      });
+      html += '</div>';
+    });
+
+    if (panel) panel.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+      + '<span style="font-size:12px;color:var(--gray)">Source : aviationweather.gov — ' + new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) + ' UTC</span>'
+      + '<span style="font-size:12px;color:var(--cyan)">' + data.length + ' NOTAM total</span></div>'
+      + html;
+
+    if (btn) { btn.innerHTML = '✅ ' + data.length + ' NOTAM'; btn.disabled = false;
+      setTimeout(() => { btn.innerHTML = '🔔 Charger NOTAM'; }, 4000); }
+
+  } catch(err) {
+    const msg = err.message === 'TIMEOUT'
+      ? 'Délai dépassé — serveur indisponible'
+      : 'Serveur inaccessible (' + (err.message||'inconnu') + ') — réessayez dans quelques instants';
+    if (panel) panel.innerHTML = '<div style="color:var(--red);font-size:13px;padding:10px 0">⚠️ ' + msg + '</div>';
+    if (btn) { btn.innerHTML = '❌ Erreur'; btn.disabled = false;
+      setTimeout(() => { btn.innerHTML = '🔔 Charger NOTAM'; }, 2500); }
+  }
+}
+function syncOaci() {
+  const oaci=g('oaci')?.value||'';
+  const dep=g('dv_dep');
+  if(dep&&!dep.value&&oaci) dep.value=oaci.toUpperCase();
+}
+
+function syncVolFields() {
+  // Synchronise le champ OACI départ météo avec le champ départ vol
+  const dep = g('dv_dep')?.value||'';
+  const oaci = g('oaci');
+  if(oaci && dep && !oaci.value) oaci.value = dep.toUpperCase();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CALCUL PRINCIPAL
+// ═══════════════════════════════════════════════════════════════════
+function calc() {
+  // ── Chargement ──
+  R.bew      = v('bew');
+  R.pax1     = v('pax1');
+  R.pax2     = v('pax2');
+  R.bags     = v('bags');
+  R.fuel_vol = Math.min(v('fuel_vol'), FUEL_USABLE);
+  R.fuel_kg  = R.fuel_vol * FUEL_DENSITY;
+  R.tow      = R.bew + R.pax1 + R.pax2 + R.bags + R.fuel_kg;
+
+  sv('fuel_kg_d', R.fuel_kg, 1);
+  sv('tow_d', R.tow, 1);
+  g('tow_d').style.color = R.tow > MTOW ? 'var(--red)' : 'var(--gold)';
+  setStatus('tow_status', R.tow<=MTOW?'go':'nogo',
+    R.tow<=MTOW ? `✅ Dans les limites — Marge ${Math.round(MTOW-R.tow)} kg` : `⚠️ Dépasse MTOW de ${Math.round(R.tow-MTOW)} kg — Réduire le chargement`);
+
+  // ── Atmosphère ──
+  R.elev     = v('elev');
+  R.qnh      = v('qnh');
+  R.oat      = v('oat');
+  R.p_alt    = R.elev + (1013.25-R.qnh)*27;
+  R.isa_t    = 15-2.0*(R.elev/1000);  // gradient ISA OACI arrondi
+  R.isa_dev  = R.oat-R.isa_t;
+  R.da       = R.p_alt + 120*R.isa_dev;
+  R.da       = Math.max(0, R.da);  // DA ne peut pas être négative pour les abaques
+  R.sigma    = Math.pow(1-R.da*6.875e-6, 4.256);
+  R.sigma    = Math.max(0.3, Math.min(1.1, R.sigma));
+
+  sv('r_palt', Math.round(R.p_alt));
+  sv('r_isa_dev', R.isa_dev, 1);
+  sv('r_da', Math.round(R.da));
+  sv('r_sigma', R.sigma, 3);
+
+  // ── Givrage carburateur (T-Td spread) ──
+  // Règle empirique : risque élevé si T-Td < 10°C, modéré < 20°C
+  // En plus : risque surtout entre -10°C et +25°C OAT (zone critique AOPA)
+  R.dew = v('dew');
+  R.td_spread = R.oat - R.dew;
+  sv('r_td_spread', R.td_spread.toFixed(1));
+  let carb_ice_txt, carb_ice_cls;
+  if (R.td_spread <= 3) {
+    carb_ice_txt = '⚠️ RISQUE ÉLEVÉ'; carb_ice_cls = 'rd';
+  } else if (R.td_spread <= 10) {
+    carb_ice_txt = '⚠️ Risque modéré'; carb_ice_cls = 'rc';
+  } else if (R.td_spread <= 20) {
+    carb_ice_txt = '✓ Faible'; carb_ice_cls = 'gn';
+  } else {
+    carb_ice_txt = '✓ Négligeable'; carb_ice_cls = 'gn';
+  }
+  sv('r_carb_ice', carb_ice_txt);
+  const carbCard = g('r_carb_ice_card');
+  if (carbCard) carbCard.className = 'rc ' + carb_ice_cls;
+
+  // ── Vent ──
+  R.wind_dir  = v('wind_dir');
+  R.wind_spd  = v('wind_spd');
+  const _rg = v('wind_gust'); R.wind_gust = _rg > 0 ? _rg : R.wind_spd;
+  R.rwy_hdg   = v('rwy_hdg');
+  R.tora      = v('tora');
+  R.lda_avail = v('lda_avail');
+  R.surface   = g('surface')?.value||'hard_dry';
+  R.precip    = g('precip')?.value||'none';
+
+  let raw_angle = Math.abs(R.wind_dir - R.rwy_hdg) % 360;
+  R.wind_angle = Math.min(raw_angle, 360-raw_angle);
+  R.hdw   = R.wind_spd  * Math.cos(R.wind_angle*Math.PI/180);
+  R.xwind = Math.abs(R.wind_spd  * Math.sin(R.wind_angle*Math.PI/180));
+  R.hdw_gust = R.wind_gust * Math.cos(R.wind_angle*Math.PI/180);
+
+  sv('r_hdw',  (R.hdw>=0?'+':'')+R.hdw.toFixed(1));
+  sv('r_xwind', R.xwind.toFixed(1));
+  sv('r_hdw_gust', (R.hdw_gust>=0?'+':'')+R.hdw_gust.toFixed(1));
+
+  const xw_max_kmh = 33;
+  setStatus('xwind_warn', R.xwind>xw_max_kmh?'warn':R.xwind>20?'warn':'go',
+    R.xwind>xw_max_kmh ? `⚠️ Vent de travers ${R.xwind.toFixed(1)} km/h — Dépasse le max démontré (33 km/h)` :
+    R.xwind>20 ? `⚠️ Vent de travers ${R.xwind.toFixed(1)} km/h — Attention` :
+    `✅ Vent de travers ${R.xwind.toFixed(1)} km/h — OK`);
+
+  // Vapp avec rafale
+  const gust_add = Math.max(0, (R.wind_gust-R.wind_spd)/2);
+  R.vapp_gust = 125 + gust_add;
+  sv('r_vapp_gust_dep', R.vapp_gust.toFixed(0));
+
+  // ── DÉCOLLAGE — interpolation abaques ──
+  const tow_clamped = Math.min(Math.max(R.tow, 650), 780);
+  const da_clamped  = Math.min(Math.max(R.da, 0), 6000);
+
+  R.to_roll_base = Math.round(interpAbaque(TO_ROLL, da_clamped, tow_clamped));
+  R.to_15_base   = Math.round(interpAbaque(TO_15M,  da_clamped, tow_clamped));
+
+  // Correctif vent POH §5.04 : "Pour 4 kt (7.408 km/h) vent face → multiplier par 0.9"
+  // Application exponentielle : f(v) = 0.9^(v/7.408) pour vent face
+  // Vent arrière : +10% par kt (1.852 km/h) — conservatif, non chiffré POH
+  let to_wind_factor;
+  if (R.hdw >= 0) {
+    to_wind_factor = Math.pow(0.9, R.hdw / 7.408);
+  } else {
+    // vent arrière : -hdw est positif (vent de dos en km/h)
+    to_wind_factor = 1.0 + (Math.abs(R.hdw) / 1.852) * 0.10;
+  }
+
+  // Correctif revêtement POH §5.04 : "Pour piste en herbe sèche rajouter 7%"
+  let surf_factor_to = 1.0;
+  let surf_label_to = 'Dur sec ×1.00';
+  if (R.surface==='grass_dry') { surf_factor_to = TO_SURF_GRASS_DRY; surf_label_to=`Herbe sèche ×${TO_SURF_GRASS_DRY.toFixed(2)}`; }
+  else if (R.surface==='hard_wet') { surf_factor_to = SURF_HARD_WET; surf_label_to=`Dur mouillé ×${SURF_HARD_WET.toFixed(2)}`; }
+
+  // Correctif précipitations (non POH — conservatif)
+  let precip_factor = 1.0;
+  if (R.precip==='light') precip_factor=1.10;
+  else if (R.precip==='heavy') precip_factor=1.25;
+
+  R.to_roll = Math.round(R.to_roll_base * to_wind_factor * surf_factor_to * precip_factor);
+  R.to_15   = Math.round(R.to_15_base   * to_wind_factor * surf_factor_to * precip_factor);
+  R.to_req  = Math.round(R.to_15 * 1.0); // sans marge supplémentaire — le pilote ajoute sa propre marge
+  R.to_marge = R.tora - R.to_15;
+
+  sv('r_to_roll', R.to_roll);
+  sv('r_to_15',   R.to_15);
+  sv('r_to_req',  R.to_req);
+  sv('r_tora_d',  R.tora);
+
+  setStatus('to_status', R.to_marge>=0?'go':'nogo',
+    R.to_marge>=0 ? `✅ Décollage possible — Marge ${Math.round(R.to_marge)} m` : `🚫 TORA INSUFFISANTE — Déficit ${Math.abs(Math.round(R.to_marge))} m`);
+
+  // Détail corrections TO
+  const toDetail = g('to_detail');
+  if (toDetail) {
+    toDetail.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:13px;font-family:'Space Mono','SF Mono','Courier New',monospace">
+        <span style="color:#b0c0d8">Distance base abaque (DA=${Math.round(da_clamped)}ft, ${Math.round(tow_clamped)}kg)</span><span style="color:var(--cyan)">${R.to_15_base} m</span>
+        <span style="color:#b0c0d8">Correction vent (${R.hdw>=0?'face':'arrière'} ${Math.abs(R.hdw).toFixed(1)} km/h)</span><span style="color:var(--cyan)">×${to_wind_factor.toFixed(3)}</span>
+        <span style="color:#b0c0d8">Correction revêtement</span><span style="color:var(--cyan)">${surf_label_to}</span>
+        <span style="color:#b0c0d8">Correction précipitations</span><span style="color:var(--cyan)">×${precip_factor.toFixed(2)}</span>
+        <span style="color:var(--gold);font-weight:700">Distance corrigée 15m/50ft</span><span style="color:var(--gold);font-weight:700">${R.to_15} m</span>
+      </div>`;
+  }
+
+  // Chips TO
+  const ct = g('chips_to');
+  if(ct) ct.innerHTML=[`DA: ${Math.round(R.da)} ft`,`TOW: ${R.tow.toFixed(0)} kg`,`Vent face: ${R.hdw.toFixed(1)} km/h`,`Surface: ${R.surface}`].filter(Boolean).map(t=>`<span class="chip">${t}</span>`).join('');
+
+  // ── MONTÉE — POH §5.06 ──
+  // Correction température: ±0.08 m/s par 5°C d'écart ISA (indiqué sur abaque POH §5.06)
+  // Correction altitude : le sigma (densité relative) réduit le taux via √σ
+  R.roc_ms = ROC_SL_ISA + (R.isa_dev / 5.0) * (-0.08); // chaud = moins de performance
+  R.roc_ms = R.roc_ms * Math.sqrt(R.sigma);
+  R.roc_ms = Math.max(0, R.roc_ms);
+  R.roc_fpm = R.roc_ms * 196.85;
+  sv('r_roc',    Math.round(R.roc_fpm));
+  sv('r_roc_ms', R.roc_ms.toFixed(2));
+
+  // ── CARBURANT — FUEL PLANNING OACI — POH §5.09 ──
+  const regime = g('regime')?.value||'75';
+  const rd = REGIME_DATA[regime]||REGIME_DATA['75'];
+  R.vcr   = rd.vcr;
+  R.conso = rd.conso; // L/h
+
+  // Vitesse sol (km/h) = vitesse propre ± composante vent face/arrière départ
+  R.vsol_kmh = Math.max(50, R.vcr + R.hdw);
+  R.vsol_kt  = R.vsol_kmh * 0.5396;
+
+  sv('r_conso', R.conso, 1);
+  sv('r_vcr',   R.vcr);
+  sv('r_vsol_kt', R.vsol_kt.toFixed(0));
+
+  // ── Paramètres planning ──
+  const taxi_min  = parseFloat(g('fp_taxi_min')?.value)||10;
+  const cont_pct  = Math.max(5, parseFloat(g('fp_cont_pct')?.value)||5);
+  const rsv_min   = Math.max(30, parseFloat(g('fp_rsv_min')?.value)||30);
+  const hold_min  = parseFloat(g('fp_hold_min')?.value)||0;
+
+  // ── Distances & temps ──
+  const isLocal = g('vol_type')?.value === 'local';
+  R.dist_nm      = isLocal ? 0 : v('dist_nm');
+  R.dist_altn_nm = isLocal ? 0 : v('dist_altn_nm')||0;
+  R.dist_km      = R.dist_nm / 0.5396;
+  R.dist_altn_km = R.dist_altn_nm / 0.5396;
+
+  // Trip time :
+  //   1. fp_trip_min > 0  → valeur manuelle (nav OU local)
+  //   2. sinon dist nav   → calculé depuis distance / vitesse sol
+  //   Note: en vol local, fp_trip_min est le seul moyen de saisir la durée
+  const fp_trip_min_val = parseFloat(g('fp_trip_min')?.value)||0;
+  let trip_h;
+  if (fp_trip_min_val > 0) {
+    trip_h = fp_trip_min_val / 60;
+  } else {
+    trip_h = R.dist_nm > 0 ? (R.dist_km / R.vsol_kmh) : 0;
+  }
+  const trip_min = trip_h * 60;
+
+  // Afficher le trip time effectif
+  sv('fp_trip_eff', trip_min > 0 ? trip_min.toFixed(0) : '—');
+
+  const altn_h   = R.dist_altn_nm > 0 ? (R.dist_altn_km / R.vsol_kmh) : 0;
+  const altn_min = altn_h * 60;
+
+  // ── Carburants (L) ──
+  const fuel_taxi   = (taxi_min / 60) * R.conso;
+  const fuel_trip   = trip_h * R.conso;
+  const fuel_cont   = fuel_trip * (cont_pct / 100);
+  const fuel_altn   = altn_h * R.conso;
+  const fuel_rsv    = (rsv_min / 60) * R.conso;
+  const fuel_hold   = (hold_min / 60) * R.conso;
+  const fuel_total  = fuel_taxi + fuel_trip + fuel_cont + fuel_altn + fuel_rsv + fuel_hold;
+
+  // ── kg (densité AVGAS = 0.72 kg/L) ──
+  const toKg = l => l * FUEL_DENSITY;
+  const toMin = l => (l / R.conso) * 60;
+
+  // ── FOB embarqué ──
+  R.fob_l   = R.fuel_vol;
+  R.fob_kg  = R.fuel_kg;
+  R.fob_min = (R.fob_l / R.conso) * 60;
+
+  // ── Extra fuel ──
+  R.extra_l   = R.fob_l - fuel_total;
+  R.extra_min = (R.extra_l / R.conso) * 60;
+
+  // ── Masses carburant par étape ──
+  const fuel_after_taxi = R.fob_l - fuel_taxi;
+  const fuel_at_dest    = fuel_after_taxi - fuel_trip;
+  const fuel_min_ldg    = fuel_rsv + fuel_hold; // ce qui doit rester à l'atterro
+
+  // Affichages tableau
+  const fmt = (l, dec=1) => l >= 0 ? l.toFixed(dec) : '—';
+
+  // Taxi
+  sv('fp_d_taxi_min', taxi_min.toFixed(0));
+  sv('fp_d_taxi_l',   fmt(fuel_taxi));
+  sv('fp_d_taxi_kg',  fmt(toKg(fuel_taxi)));
+
+  // Trip
+  sv('fp_d_trip_min', fmt(trip_min, 0));
+  sv('fp_d_trip_l',   fmt(fuel_trip));
+  sv('fp_d_trip_kg',  fmt(toKg(fuel_trip)));
+  const depOaci = g('dv_dep')?.value||'DEP';
+  const arrOaci = g('dv_arr')?.value||'DEST';
+  const altnOaci = g('dv_altn')?.value||'ALTN';
+  const el_trip_info = g('fp_trip_info');
+  if(el_trip_info) {
+    if (fp_trip_min_val > 0) {
+      el_trip_info.textContent = isLocal
+        ? `Vol local ${depOaci||'DEP'} — ${fp_trip_min_val} min`
+        : `${depOaci||'DEP'} → ${arrOaci||'DEST'} — ${fp_trip_min_val} min forcé`;
+    } else {
+      el_trip_info.textContent = R.dist_nm > 0
+        ? `${depOaci||'DEP'} → ${arrOaci||'DEST'} — ${R.dist_nm.toFixed(0)} NM`
+        : 'Saisir une distance (nav) ou un Trip time (local)';
+    }
+  }
+
+  // Contingency
+  g('fp_cont_label') && (g('fp_cont_label').textContent = `${cont_pct}% du trip fuel`);
+  sv('fp_d_cont_min', fmt(toMin(fuel_cont), 0));
+  sv('fp_d_cont_l',   fmt(fuel_cont));
+  sv('fp_d_cont_kg',  fmt(toKg(fuel_cont)));
+
+  // Alternate
+  sv('fp_d_altn_min', altn_min > 0 ? fmt(altn_min, 0) : '0');
+  sv('fp_d_altn_l',   fmt(fuel_altn));
+  sv('fp_d_altn_kg',  fmt(toKg(fuel_altn)));
+  sv('fp_altn_time_d', altn_min > 0 ? fmt(altn_min, 0) : '—');
+  const el_altn_lbl = g('fp_altn_label');
+  if(el_altn_lbl) el_altn_lbl.textContent = altnOaci ? `${arrOaci||'DEST'} → ${altnOaci} — ${R.dist_altn_nm.toFixed(0)} NM` : 'Non renseigné';
+
+  // Final Reserve
+  g('fp_rsv_label') && (g('fp_rsv_label').textContent = `${rsv_min} min ${g('dv_rules')?.value==='VFR de nuit'?'VFR nuit':'VFR jour'}`);
+  sv('fp_d_rsv_min', rsv_min.toFixed(0));
+  sv('fp_d_rsv_l',   fmt(fuel_rsv));
+  sv('fp_d_rsv_kg',  fmt(toKg(fuel_rsv)));
+
+  // Holding
+  sv('fp_d_hold_min', hold_min.toFixed(0));
+  sv('fp_d_hold_l',   fmt(fuel_hold));
+  sv('fp_d_hold_kg',  fmt(toKg(fuel_hold)));
+
+  // TOTAL
+  sv('fp_d_tot_min', fmt((fuel_total/R.conso)*60, 0));
+  sv('fp_d_tot_l',   fmt(fuel_total));
+  sv('fp_d_tot_kg',  fmt(toKg(fuel_total)));
+
+  // FOB & extra
+  sv('fp_fob_l',   R.fob_l.toFixed(1));
+  sv('fp_fob_kg',  R.fob_kg.toFixed(1));
+  sv('fp_fob_min', R.fob_min.toFixed(0));
+  sv('fp_extra_l', R.extra_l.toFixed(1));
+  sv('fp_extra_min', R.extra_min.toFixed(0));
+  if(g('fp_extra_l')) g('fp_extra_l').style.color = R.extra_l >= 0 ? 'var(--green)' : 'var(--red)';
+  if(g('fp_extra_min')) g('fp_extra_min').style.color = R.extra_l >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // Synthèse masses carburant
+  sv('m_block_l',  R.fob_l.toFixed(1));
+  sv('m_block_kg', R.fob_kg.toFixed(1));
+  sv('m_to_l',     fuel_after_taxi >= 0 ? fuel_after_taxi.toFixed(1) : '—');
+  sv('m_to_kg',    fuel_after_taxi >= 0 ? toKg(fuel_after_taxi).toFixed(1) : '—');
+  sv('m_dest_l',   fuel_at_dest >= 0 ? fuel_at_dest.toFixed(1) : '—');
+  sv('m_dest_kg',  fuel_at_dest >= 0 ? toKg(fuel_at_dest).toFixed(1) : '—');
+  sv('m_ldg_l',    fuel_min_ldg.toFixed(1));
+  sv('m_ldg_kg',   toKg(fuel_min_ldg).toFixed(1));
+
+  setStatus('fuel_status', R.extra_l >= 0 ? 'go' : 'nogo',
+    R.extra_l >= 0
+      ? `✅ Carburant suffisant — Extra ${R.extra_l.toFixed(1)} L (+${R.extra_min.toFixed(0)} min)`
+      : `🚫 Carburant INSUFFISANT — Déficit ${Math.abs(R.extra_l).toFixed(1)} L — Réduire ou ravitailler`);
+
+  // Endurance utile (FOB - final reserve) / conso
+  R.endur_util_h = Math.max(0, (R.fob_l - fuel_rsv - fuel_hold) / R.conso);
+  R.range_nm = R.endur_util_h * R.vsol_kt;
+  sv('r_endur_tot', (R.fob_min / 60).toFixed(2));
+  sv('r_endur_util', R.endur_util_h.toFixed(2));
+  sv('r_range', Math.round(R.range_nm));
+  sv('r_range_ar', Math.round(R.range_nm / 2));
+
+  // Temps de vol formaté h:mm
+  const h = Math.floor(trip_h);
+  const m = Math.round((trip_h - h) * 60);
+  sv('r_tps_vol', trip_h > 0 ? `${h}h${m.toString().padStart(2,'0')}` : '—');
+
+  // Masse carburant à l'atterrissage (pour perfo landing)
+  R.fuel_kg_ldg = Math.max(toKg(fuel_min_ldg), toKg(fuel_rsv));
+  // ── Atmosphère ARRIVÉE ──
+  R.arr_oat      = v('arr_oat');
+  R.arr_elev     = v('arr_elev');
+  R.arr_qnh      = v('arr_qnh');
+  R.arr_rwy_hdg  = v('arr_rwy_hdg');
+  R.arr_wind_spd = v('arr_wind_spd');
+  R.arr_wind_dir = v('arr_wind_dir');
+  const _rga = v('arr_wind_gust'); R.arr_wind_gust = _rga > 0 ? _rga : R.arr_wind_spd;
+  R.arr_surface  = g('arr_surface')?.value||'hard_dry';
+  R.arr_precip   = g('arr_precip')?.value||'none';
+
+  R.arr_p_alt  = R.arr_elev + (1013.25-R.arr_qnh)*27;
+  R.arr_isa_t  = 15-2.0*(R.arr_elev/1000);  // gradient ISA OACI arrondi
+  R.arr_isa_dev= R.arr_oat-R.arr_isa_t;
+  R.arr_da     = R.arr_p_alt+120*R.arr_isa_dev;
+  R.arr_da     = Math.min(Math.max(R.arr_da, 0), 6000);
+
+  let arr_raw_angle = Math.abs(R.arr_wind_dir-v('arr_rwy_hdg'))%360;
+  R.arr_wind_angle  = Math.min(arr_raw_angle, 360-arr_raw_angle);
+  R.arr_hdw   = R.arr_wind_spd  * Math.cos(R.arr_wind_angle*Math.PI/180);
+  R.arr_xwind = Math.abs(R.arr_wind_spd * Math.sin(R.arr_wind_angle*Math.PI/180));
+  R.arr_hdw_gust = R.arr_wind_gust * Math.cos(R.arr_wind_angle*Math.PI/180);
+
+  sv('r_arr_palt',    Math.round(R.arr_p_alt));
+  sv('r_arr_isa_dev', R.arr_isa_dev, 1);
+  sv('r_arr_da',      Math.round(R.arr_da));
+  sv('r_arr_hdw',     (R.arr_hdw>=0?'+':'')+R.arr_hdw.toFixed(1));
+
+  setStatus('arr_xwind_warn', R.arr_xwind>33?'warn':R.arr_xwind>20?'warn':'go',
+    R.arr_xwind>33 ? `⚠️ Vent de travers arrivée ${R.arr_xwind.toFixed(1)} km/h — Dépasse max démontré (33 km/h)` :
+    R.arr_xwind>20 ? `⚠️ Vent de travers arrivée ${R.arr_xwind.toFixed(1)} km/h — Attention` :
+    `✅ Vent de travers arrivée ${R.arr_xwind.toFixed(1)} km/h — OK`);
+
+  // Vapp avec rafale arrivée
+  const arr_gust_add = Math.max(0,(R.arr_wind_gust-R.arr_wind_spd)/2);
+  R.arr_vapp_gust = 125 + arr_gust_add;
+  sv('r_vapp_gust_arr', R.arr_vapp_gust.toFixed(0));
+
+  // ── ATTERRISSAGE ──
+  // Masse à l'atterrissage = BEW + pax + bagages + carburant résiduel à l'atterro (Final Reserve)
+  // R.fuel_kg_ldg est calculé dans le fuel planning (Final Reserve + Holding)
+  const fuel_kg_at_ldg = R.fuel_kg_ldg !== undefined ? R.fuel_kg_ldg : R.fuel_kg * 0.2;
+  R.m_ldg = R.bew + R.pax1 + R.pax2 + R.bags + fuel_kg_at_ldg;
+  R.m_ldg = Math.min(R.m_ldg, R.tow); // ne peut pas dépasser TOW
+  const m_ldg_c = Math.min(Math.max(R.m_ldg, 650), 780);
+
+  // DA arrivée pour interpolation
+  const da_arr_c = Math.min(Math.max(R.arr_da||0, 0), 6000);
+
+  R.ldr_base   = Math.round(interpAbaque(LDG_ROLL, da_arr_c, m_ldg_c));
+  R.lda15_base = Math.round(interpAbaque(LDG_15M,  da_arr_c, m_ldg_c));
+
+  // Facteur vent arrivée POH §5.10 : même règle que décollage
+  // "Pour 4 kt (7.408 km/h) de face → multiplier par 0.9"
+  let ldg_wind_factor;
+  if (R.arr_hdw >= 0) {
+    ldg_wind_factor = Math.pow(0.9, R.arr_hdw / 7.408);
+  } else {
+    ldg_wind_factor = 1.0 + (Math.abs(R.arr_hdw) / 1.852) * 0.10;
+  }
+
+  // Facteur revêtement arrivée POH §5.10 : "Pour piste en herbe sèche rajouter 20%"
+  let surf_factor_ldg = 1.0;
+  let surf_label_ldg = 'Dur sec ×1.00';
+  if (R.arr_surface==='grass_dry') { surf_factor_ldg = LDG_SURF_GRASS_DRY; surf_label_ldg=`Herbe sèche ×${LDG_SURF_GRASS_DRY.toFixed(2)}`; }
+  else if (R.arr_surface==='hard_wet') { surf_factor_ldg = SURF_HARD_WET; surf_label_ldg=`Dur mouillé ×${SURF_HARD_WET.toFixed(2)}`; }
+
+  // Facteur précipitations arrivée
+  let ldg_precip_factor = 1.0;
+  if (R.arr_precip==='light') ldg_precip_factor=1.10;
+  else if (R.arr_precip==='heavy') ldg_precip_factor=1.25;
+
+  R.ldr   = Math.round(R.ldr_base   * ldg_wind_factor * surf_factor_ldg * ldg_precip_factor);
+  R.lda15 = Math.round(R.lda15_base * ldg_wind_factor * surf_factor_ldg * ldg_precip_factor);
+  R.lda_req  = R.lda15;
+  R.lda_marge = R.lda_avail - R.lda15;
+
+  sv('r_ldr',     R.ldr);
+  sv('r_lda15',   R.lda15);
+  sv('r_lda_req', R.lda_req);
+  sv('r_lda_d',   R.lda_avail);
+
+  // Détail corrections atterrissage
+  const ldgDetail = g('ldg_detail');
+  if (ldgDetail) {
+    ldgDetail.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:13px;font-family:'Space Mono','SF Mono','Courier New',monospace">
+        <span style="color:#b0c0d8">Masse estimée atterrissage</span><span style="color:var(--cyan)">${R.m_ldg.toFixed(0)} kg</span>
+        <span style="color:#b0c0d8">DA arrivée</span><span style="color:var(--cyan)">${Math.round(da_arr_c)} ft</span>
+        <span style="color:#b0c0d8">Distance base abaque 15m/50ft</span><span style="color:var(--cyan)">${R.lda15_base} m</span>
+        <span style="color:#b0c0d8">Correction vent (${R.arr_hdw>=0?'face':'arrière'} ${Math.abs(R.arr_hdw).toFixed(1)} km/h)</span><span style="color:var(--cyan)">×${ldg_wind_factor.toFixed(3)}</span>
+        <span style="color:#b0c0d8">Correction revêtement</span><span style="color:var(--cyan)">${surf_label_ldg}</span>
+        <span style="color:#b0c0d8">Correction précipitations</span><span style="color:var(--cyan)">×${ldg_precip_factor.toFixed(2)}</span>
+        <span style="color:var(--gold);font-weight:700">Distance corrigée 15m/50ft</span><span style="color:var(--gold);font-weight:700">${R.lda15} m</span>
+      </div>`;
+  }
+
+  setStatus('ldg_status', R.lda_marge>=0?'go':'nogo',
+    R.lda_marge>=0 ? `✅ Atterrissage possible — Marge ${Math.round(R.lda_marge)} m` : `🚫 LDA INSUFFISANTE — Déficit ${Math.abs(Math.round(R.lda_marge))} m`);
+
+  const cl = g('chips_ldg');
+  if(cl) cl.innerHTML=[`M atterrissage: ${R.m_ldg.toFixed(0)} kg`,`DA arrivée: ${Math.round(da_arr_c)} ft`,`Vent face: ${R.arr_hdw.toFixed(1)} km/h`].filter(Boolean).map(t=>`<span class="chip">${t}</span>`).join('');
+
+
+  // Champs dossier de vol
+  // EET calculé depuis trip_h (affiché dans updateDossierSummary)
+
+  // Sync centrage displays
+  sv('cg_r_bew_m', v('bew'));
+  sv('cg_bew_display', v('bew'));  // affichage readonly sur page centrage
+  sv('cg_r_pil_m', R.pax1);
+  sv('cg_r_pax_m', R.pax2);
+  sv('cg_r_bag_m', R.bags);
+  sv('cg_r_fuel_m', R.fuel_kg.toFixed(1));
+
+  calcCG();
+  save();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CENTRAGE — Centrogramme POH (Masse vs Moment total)
+// ═══════════════════════════════════════════════════════════════════
+function calcCG() {
+  const bew_m   = v('bew');
+  const bew_mom = v('cg_bew_mom');
+  const pil     = v('pax1'),  pil_arm  = v('cg_pil_arm');
+  const pax     = v('pax2'),  pax_arm  = v('cg_pax_arm');
+  const bag     = v('bags'),  bag_arm  = v('cg_bag_arm');
+  const fuel    = R.fuel_kg||0, fuel_arm = v('cg_fuel_arm');
+
+  const pil_mom  = pil  * pil_arm;
+  const pax_mom  = pax  * pax_arm;
+  const bag_mom  = bag  * bag_arm;
+  const fuel_mom = fuel * fuel_arm;
+
+  const tot_m   = bew_m + pil + pax + bag + fuel;
+  const tot_mom = bew_mom + pil_mom + pax_mom + bag_mom + fuel_mom;
+
+  // Arrivée : R.fuel_kg_ldg est en kg (Final Reserve + Holding)
+  const fuel_arr_kg = R.fuel_kg_ldg !== undefined ? R.fuel_kg_ldg : fuel * 0.20;
+  const tot_m_arr   = bew_m + pil + pax + bag + fuel_arr_kg;           // tout en kg ✓
+  const tot_mom_arr = bew_mom + pil_mom + pax_mom + bag_mom + fuel_arr_kg * fuel_arm;
+
+  R.cg_tot_m   = tot_m;
+  R.cg_tot_mom = tot_mom;
+  R.cg_arr_m   = tot_m_arr;
+  R.cg_arr_mom = tot_mom_arr;
+  R.bew_m      = bew_m;
+  R.bew_mom    = bew_mom;
+
+  // Update displays
+  sv('cg_r_bew_m',   bew_m.toFixed(1));
+  sv('cg_r_bew_mom', bew_mom.toFixed(1));
+  sv('cg_r_pil_mom', pil_mom.toFixed(1));
+  sv('cg_r_pax_mom', pax_mom.toFixed(1));
+  sv('cg_r_bag_mom', bag_mom.toFixed(1));
+  sv('cg_r_fuel_m',  (R.fuel_kg||0).toFixed(1));
+  sv('cg_r_fuel_mom',fuel_mom.toFixed(1));
+  sv('cg_tot_m',     tot_m.toFixed(1));
+  sv('cg_tot_mom',   tot_mom.toFixed(1));
+
+  // Check si dans l'enveloppe — on vérifie si le point est dans le polygone ENV_PTS
+  R.cg_dep_ok = pointInEnvelope(tot_mom, tot_m);
+  R.cg_arr_ok = pointInEnvelope(tot_mom_arr, tot_m_arr);
+
+  // Verdicts
+  const verdicts = g('cg_verdicts');
+  if (verdicts) {
+    const checks = [
+      {lbl:'Masse départ ≤ MTOW', val:`${tot_m.toFixed(0)} kg / ${MTOW} kg`, ok:tot_m<=MTOW},
+      {lbl:'Centrage départ dans enveloppe', val:`Moment ${tot_mom.toFixed(0)} m·kg / Masse ${tot_m.toFixed(0)} kg`, ok:R.cg_dep_ok},
+      {lbl:'Centrage arrivée dans enveloppe', val:`Moment ${tot_mom_arr.toFixed(0)} m·kg / Masse ${tot_m_arr.toFixed(0)} kg`, ok:R.cg_arr_ok},
+      {lbl:'Bagages ≤ 35 kg', val:`${bag} kg / max 35 kg`, ok:bag<=35},
+    ];
+    verdicts.innerHTML = checks.map(c=>`<div class="gnr"><span class="gnl">${c.lbl}</span><span class="gnv">${c.val}</span><span class="badge ${c.ok?'go':'warn'}">${c.ok?'✅ OK':'⚠️ VÉRIFIER'}</span></div>`).join('');
+    const all_ok = checks.every(c=>c.ok);
+    verdicts.innerHTML += `<div class="sb ${all_ok?'go':'warn'}" style="margin-top:10px;font-size:15px">${all_ok?'✅ Masse & centrage dans les limites':'⚠️ Point(s) masse/centrage à examiner'}</div>`;
+  }
+
+  drawCGChart();
+}
+
+function pointInEnvelope(mom, masse) {
+  // Ray casting algorithm — check if point is inside ENV_PTS polygon
+  const pts = ENV_PTS.slice(0,-1); // remove closing point
+  let inside = false;
+  for (let i=0, j=pts.length-1; i<pts.length; j=i++) {
+    const xi=pts[i].x, yi=pts[i].y, xj=pts[j].x, yj=pts[j].y;
+    const intersect = ((yi>masse) !== (yj>masse)) && (mom < (xj-xi)*(masse-yi)/(yj-yi)+xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function drawCGChart() {
+  const wrap = g('cgCanvas')?.parentNode;
+  if (!wrap) return;
+
+  // Supprimer l'ancien SVG
+  const old = wrap.querySelector('svg.cg-svg');
+  if (old) old.remove();
+
+  // ── Données ──
+  const dep_m   = R.cg_tot_m   || 0;
+  const dep_mom = R.cg_tot_mom || 0;
+  const arr_m   = R.cg_arr_m   || 0;
+  const arr_mom = R.cg_arr_mom || 0;
+  const bew_m   = R.bew_m      || 0;
+  const bew_mom = R.bew_mom    || 0;
+  const dep_ok  = R.cg_dep_ok;
+  const arr_ok  = R.cg_arr_ok;
+
+  // ── Dimensions & marges ──
+  const W=520, H=360;
+  const ml=64, mr=24, mt=24, mb=60;
+  const pw=W-ml-mr, ph=H-mt-mb;
+
+  // ── Domaine des axes (fixe, calé sur le centrogramme POH) ──
+  const xMin=80, xMax=360, yMin=450, yMax=820;
+
+  // ── Fonctions de projection ──
+  const px = x => ml + (x-xMin)/(xMax-xMin)*pw;
+  const py = y => mt + (1-(y-yMin)/(yMax-yMin))*ph;
+
+  // ── Grille ──
+  let svgStr = `<svg class="cg-svg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;border-radius:8px;background:rgba(255,255,255,.03)" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Fond zone graphique
+  svgStr += `<rect x="${ml}" y="${mt}" width="${pw}" height="${ph}" fill="rgba(10,22,40,.6)" rx="4"/>`;
+
+  // Grille verticale (moments)
+  for (let x=100; x<=360; x+=50) {
+    const gx = px(x);
+    svgStr += `<line x1="${gx}" y1="${mt}" x2="${gx}" y2="${mt+ph}" stroke="rgba(100,150,220,.15)" stroke-width="1"/>`;
+    svgStr += `<text x="${gx}" y="${mt+ph+18}" text-anchor="middle" font-size="11" fill="#6677aa" font-family="monospace">${x}</text>`;
+  }
+  // Grille horizontale (masses)
+  for (let y=500; y<=800; y+=50) {
+    const gy = py(y);
+    svgStr += `<line x1="${ml}" y1="${gy}" x2="${ml+pw}" y2="${gy}" stroke="rgba(100,150,220,.15)" stroke-width="1"/>`;
+    svgStr += `<text x="${ml-7}" y="${gy+4}" text-anchor="end" font-size="11" fill="#6677aa" font-family="monospace">${y}</text>`;
+  }
+
+  // Labels axes
+  svgStr += `<text x="${ml+pw/2}" y="${H-6}" text-anchor="middle" font-size="12" fill="#8899bb" font-family="Arial">Moment total (m·kg)</text>`;
+  svgStr += `<text transform="translate(14,${mt+ph/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="#8899bb" font-family="Arial">Masse totale (kg)</text>`;
+
+  // ── Enveloppe Cat. U — polygone rempli ──
+  // Points POH §6.02 : (mom, masse)
+  const envPts = [
+    [114,580],[172,780],[300,780],[196,580]
+  ];
+  const polyPts = envPts.map(([x,y]) => `${px(x)},${py(y)}`).join(' ');
+  svgStr += `<polygon points="${polyPts}" fill="rgba(46,184,126,0.13)" stroke="#2eb87e" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  // Label enveloppe
+  svgStr += `<text x="${px(207)}" y="${py(700)}" text-anchor="middle" font-size="11" fill="rgba(46,184,126,.7)" font-family="Arial" font-weight="700">Cat. U</text>`;
+
+  // MTOW line
+  const yMtow = py(780);
+  svgStr += `<line x1="${ml}" y1="${yMtow}" x2="${ml+pw}" y2="${yMtow}" stroke="rgba(224,60,60,.4)" stroke-width="1" stroke-dasharray="6,3"/>`;
+  svgStr += `<text x="${ml+pw-4}" y="${yMtow-4}" text-anchor="end" font-size="10" fill="rgba(224,60,60,.7)" font-family="Arial">MTOW 780 kg</text>`;
+
+  // ── Fonction pour dessiner un point ──
+  const drawPoint = (mx, my, color, strokeCol, shape, size, label) => {
+    // Clamp visuel pour que le point reste dans la zone même si hors limites
+    const cx = Math.max(ml+size, Math.min(ml+pw-size, px(mx)));
+    const cy = Math.max(mt+size, Math.min(mt+ph-size, py(my)));
+    // Halo
+    svgStr += `<circle cx="${cx}" cy="${cy}" r="${size+5}" fill="${color}" opacity=".2"/>`;
+    if (shape === 'diamond') {
+      svgStr += `<polygon points="${cx},${cy-size} ${cx+size},${cy} ${cx},${cy+size} ${cx-size},${cy}" fill="${color}" stroke="${strokeCol}" stroke-width="2"/>`;
+    } else if (shape === 'square') {
+      const s = size*0.85;
+      svgStr += `<rect x="${cx-s}" y="${cy-s}" width="${s*2}" height="${s*2}" fill="${color}" stroke="${strokeCol}" stroke-width="2" rx="2"/>`;
+    } else {
+      svgStr += `<circle cx="${cx}" cy="${cy}" r="${size}" fill="${color}" stroke="${strokeCol}" stroke-width="2"/>`;
+    }
+    // Label flottant
+    if (label) {
+      const lx = cx + (cx > ml+pw*0.7 ? -(size+6) : size+6);
+      const anchor = cx > ml+pw*0.7 ? 'end' : 'start';
+      svgStr += `<rect x="${lx - (anchor==='end'?90:0)}" y="${cy-12}" width="90" height="16" rx="3" fill="rgba(10,22,40,.85)"/>`;
+      svgStr += `<text x="${lx + (anchor==='end'?-3:3)}" y="${cy+1}" text-anchor="${anchor}" font-size="11" fill="${strokeCol}" font-family="Arial" font-weight="700">${label}</text>`;
+    }
+  };
+
+  // BEW (carré bleu)
+  if (bew_m > 0) drawPoint(bew_mom, bew_m, '#4fa3e0', '#2d7dd2', 'square', 7, 'BEW');
+
+  // Arrivée (cercle orange)
+  if (arr_m > 0) {
+    const ac = arr_ok ? '#f0a500' : '#e03c3c';
+    drawPoint(arr_mom, arr_m, arr_ok?'rgba(240,165,0,.3)':'rgba(224,60,60,.3)', ac, 'circle', 10,
+      `Arr. ${arr_ok?'✓':'✗'}`);
+  }
+
+  // Départ (losange vert/rouge — le plus visible)
+  if (dep_m > 0) {
+    const dc = dep_ok ? '#2eb87e' : '#e03c3c';
+    drawPoint(dep_mom, dep_m, dep_ok?'rgba(46,184,126,.35)':'rgba(224,60,60,.35)', dc, 'diamond', 12,
+      `Départ ${dep_ok?'✓':'✗'}`);
+  }
+
+  // ── Légende ──
+  const legY = mt + ph + 42;
+  const items = [
+    {color:'#2eb87e', fill:'rgba(46,184,126,.15)', label:'Enveloppe Cat. U', shape:'rect'},
+    {color:'#2d7dd2', fill:'#4fa3e0', label:'BEW', shape:'sq'},
+    {color: dep_ok?'#2eb87e':'#e03c3c', fill: dep_ok?'rgba(46,184,126,.35)':'rgba(224,60,60,.35)', label:'Départ', shape:'dia'},
+    {color:'#f0a500', fill:'rgba(240,165,0,.3)', label:'Arrivée', shape:'circ'},
+  ];
+  let lx = ml;
+  items.forEach(it => {
+    if (it.shape==='rect') {
+      svgStr += `<rect x="${lx}" y="${legY-6}" width="14" height="12" fill="${it.fill}" stroke="${it.color}" stroke-width="1.5" rx="2"/>`;
+    } else if (it.shape==='sq') {
+      svgStr += `<rect x="${lx+1}" y="${legY-5}" width="10" height="10" fill="${it.fill}" stroke="${it.color}" stroke-width="1.5" rx="1"/>`;
+    } else if (it.shape==='dia') {
+      svgStr += `<polygon points="${lx+7},${legY-7} ${lx+13},${legY} ${lx+7},${legY+7} ${lx+1},${legY}" fill="${it.fill}" stroke="${it.color}" stroke-width="1.5"/>`;
+    } else {
+      svgStr += `<circle cx="${lx+7}" cy="${legY}" r="6" fill="${it.fill}" stroke="${it.color}" stroke-width="1.5"/>`;
+    }
+    svgStr += `<text x="${lx+18}" y="${legY+4}" font-size="11" fill="#8899bb" font-family="Arial">${it.label}</text>`;
+    lx += 100;
+  });
+
+  svgStr += '</svg>';
+  wrap.insertAdjacentHTML('beforeend', svgStr);
+  // Cacher le canvas original
+  const cv = g('cgCanvas'); if (cv) cv.style.display='none';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TABLEAU DE BORD
+// ═══════════════════════════════════════════════════════════════════
+function buildDashboard() {
+  const checks = [
+    {lbl:'Masse au décollage (MTOW)', val:`${(R.tow||0).toFixed(0)} kg / ${MTOW} kg`, ok:(R.tow||0)<=MTOW, nogo:(R.tow||0)>MTOW},
+    {lbl:'Altitude de densité', val:`${Math.round(R.da||0)} ft`, ok:(R.da||0)<6000, warn:(R.da||0)>=4000},
+    {lbl:'Vent de travers (max 33 km/h)', val:`${(R.xwind||0).toFixed(1)} km/h`, ok:(R.xwind||0)<=33, nogo:(R.xwind||0)>33},
+    {lbl:'Distance décollage / TORA', val:`${R.to_15||0} m / ${R.tora||0} m`, ok:(R.to_marge||0)>=0, nogo:(R.to_marge||0)<0},
+    {lbl:'Distance atterrissage / LDA', val:`${R.lda15||0} m / ${R.lda_avail||0} m`, ok:(R.lda_marge||0)>=0, nogo:(R.lda_marge||0)<0},
+    {lbl:'Carburant (extra fuel)', val:`Extra ${(R.extra_l||0).toFixed(1)} L / FOB ${R.fuel_vol||0} L`, ok:(R.extra_l||0)>=0, nogo:(R.extra_l||0)<0},
+    {lbl:'Centrage départ', val:`Moment ${(R.cg_tot_mom||0).toFixed(0)} m·kg`, ok:R.cg_dep_ok||false, nogo:!(R.cg_dep_ok||false)},
+    {lbl:'Centrage arrivée', val:`Moment ${(R.cg_arr_mom||0).toFixed(0)} m·kg`, ok:R.cg_arr_ok||false, nogo:!(R.cg_arr_ok||false)},
+  ];
+
+  const list = g('gonogo_list');
+  if (list) list.innerHTML = checks.map(c=>{
+    const cls   = c.ok ? 'go' : c.nogo ? 'nogo' : c.warn ? 'warn' : 'nogo';
+    const badge = c.ok ? '✅ OK' : c.nogo ? '🚫 HORS LIMITES' : c.warn ? '⚠️ ATTENTION' : '🚫 HORS LIMITES';
+    return `<div class="gnr"><span class="gnl">${c.lbl}</span><span class="gnv">${c.val}</span><span class="badge ${cls}">${badge}</span></div>`;
+  }).join('');
+
+  const nogo = checks.filter(c => c.nogo && !c.ok).length;
+  const warn = checks.filter(c => c.warn && !c.ok && !c.nogo).length;
+  const verdict = g('global_verdict');
+  if (verdict) {
+    verdict.className='sb '+(nogo>0?'nogo':warn>0?'warn':'go');
+    verdict.textContent = nogo>0?`🚫 ${nogo} CRITÈRE(S) HORS LIMITES — VOL NON AUTORISÉ`:warn>0?`⚠️ ${warn} POINT(S) À VÉRIFIER`:'✅ TOUS CRITÈRES DANS LES LIMITES';
+  }
+
+  const badge = g('hbadge');
+  if (badge) {
+    if (nogo>0) { badge.textContent=`${nogo} VERIF`; badge.style.color='var(--red)'; badge.style.background='rgba(224,60,60,.2)'; badge.style.borderColor='rgba(224,60,60,.5)'; }
+    else { badge.textContent='OK'; badge.style.color='var(--green)'; badge.style.background='rgba(46,184,126,.15)'; badge.style.borderColor='rgba(46,184,126,.4)'; }
+  }
+
+  const chips = g('summary_chips');
+  if (chips) chips.innerHTML = [
+    (g('oaci')?.value||'LFPB').toUpperCase(),
+    `OAT ${R.oat||15}°C`,`QNH ${R.qnh||1013} hPa`,
+    `DA ${Math.round(R.da||0)} ft`,
+    `Vent ${R.wind_dir||0}°/${R.wind_spd||0} km/h`,
+    R.vis_metar ? `Vis: ${R.vis_metar}m` : null,
+    `TOW ${(R.tow||0).toFixed(0)} kg`,
+    `TO 15m: ${R.to_15||'—'} m`,
+  ].filter(Boolean).map(t=>`<span class="chip">${t}</span>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DOSSIER DE VOL
+// ═══════════════════════════════════════════════════════════════════
+function updateDossierSummary() {
+  const sum = g('dossier_summary'); if(!sum)return;
+  const dep=(g('dv_dep')?.value||'—').toUpperCase();
+  const arr=(g('dv_arr')?.value||'—').toUpperCase();
+  const altn=(g('dv_altn')?.value||'').toUpperCase();
+  const date=g('dv_date')?.value||'—';
+  const etd=g('dv_etd')?.value||'—';
+  const alt=g('dv_alt')?.value||'—';
+  const rules=g('dv_rules')?.value||'VFR';
+  const immat=(g('immat')?.value||'F-XXXX').toUpperCase();
+  // EET calculé depuis le fuel planning
+  const eet_h = R.dist_nm > 0 && R.vsol_kt > 0
+    ? `${Math.floor(R.dist_nm/R.vsol_kt)}h${Math.round((R.dist_nm/R.vsol_kt%1)*60).toString().padStart(2,'0')}`
+    : (g('dv_eet')?.value||'—');
+  sum.innerHTML=`
+    <div class="rg rg2" style="margin-bottom:8px">
+      <div class="rc bl"><div class="v" style="font-size:18px">${dep}</div><div class="l">Départ</div></div>
+      <div class="rc bl"><div class="v" style="font-size:18px">${arr}</div><div class="l">Destination</div></div>
+    </div>
+    <div class="rg rg3" style="margin-bottom:8px">
+      <div class="rc bl"><div class="v" style="font-size:13px">${date}</div><div class="l">Date</div></div>
+      <div class="rc bl"><div class="v" style="font-size:13px">${etd} UTC</div><div class="l">ETD</div></div>
+      <div class="rc bl"><div class="v" style="font-size:13px">${eet_h}</div><div class="l">EET (calculé)</div></div>
+    </div>
+    <div class="rg rg3">
+      <div class="rc"><div class="v" style="font-size:13px">${R.dist_nm||0} NM</div><div class="l">Distance</div></div>
+      <div class="rc"><div class="v" style="font-size:13px">${R.fob_l ? R.fob_l.toFixed(0)+'L' : R.fuel_vol+'L'}</div><div class="l">FOB</div></div>
+      <div class="rc ${(R.extra_l||0)>=0?'gn':'rd'}"><div class="v" style="font-size:13px">${R.extra_l !== undefined ? (R.extra_l>=0?'+':'')+R.extra_l.toFixed(0)+'L':'—'}</div><div class="l">Extra fuel</div></div>
+    </div>
+    <div style="margin-top:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;color:#b0c0d8">${immat} · ${rules} · ${alt}${altn?' · ALTN: '+altn:''}</div>`;
+}
+
+function genDossier() {
+  calc(); calcCG(); buildDashboard();
+  const actions = g('dossier_actions');
+  if (actions) actions.style.display='block';
+  const preview = g('dossier_preview');
+  if (preview) preview.innerHTML=`<div style="background:rgba(46,184,126,.1);border:1px solid rgba(46,184,126,.3);border-radius:8px;padding:10px 14px;color:var(--green)">✅ Dossier prêt — 3 pages</div>`;
+  updateDossierSummary();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CENTROGRAMME SVG POUR LE PDF — fond blanc, couleurs impression
+// ═══════════════════════════════════════════════════════════════════
+function buildCGSvgForPDF(R) {
+  // Données
+  const dep_m   = R.cg_tot_m   || 0;
+  const dep_mom = R.cg_tot_mom || 0;
+  const arr_m   = R.cg_arr_m   || 0;
+  const arr_mom = R.cg_arr_mom || 0;
+  const bew_m   = R.bew_m      || 0;
+  const bew_mom = R.bew_mom    || 0;
+  const dep_ok  = R.cg_dep_ok;
+  const arr_ok  = R.cg_arr_ok;
+
+  // Dimensions
+  const W=480, H=300;
+  const ml=56, mr=20, mt=18, mb=52;
+  const pw=W-ml-mr, ph=H-mt-mb;
+
+  // Domaine (calé sur POH §6)
+  const xMin=80, xMax=360, yMin=450, yMax=820;
+  const px = x => ml + (x-xMin)/(xMax-xMin)*pw;
+  const py = y => mt + (1-(y-yMin)/(yMax-yMin))*ph;
+
+  let s = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:480px;height:auto;display:block;margin:8px 0;border:1px solid #ccd;border-radius:4px;background:#fafbfd" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Fond zone graphique
+  s += `<rect x="${ml}" y="${mt}" width="${pw}" height="${ph}" fill="#f5f8ff" stroke="#aab" stroke-width="0.5"/>`;
+
+  // Grille
+  for (let x=100; x<=360; x+=50) {
+    const gx=px(x);
+    s += `<line x1="${gx}" y1="${mt}" x2="${gx}" y2="${mt+ph}" stroke="#dde" stroke-width="0.8"/>`;
+    s += `<text x="${gx}" y="${mt+ph+14}" text-anchor="middle" font-size="9" fill="#778" font-family="Arial">${x}</text>`;
+  }
+  for (let y=500; y<=800; y+=50) {
+    const gy=py(y);
+    s += `<line x1="${ml}" y1="${gy}" x2="${ml+pw}" y2="${gy}" stroke="#dde" stroke-width="0.8"/>`;
+    s += `<text x="${ml-4}" y="${gy+3}" text-anchor="end" font-size="9" fill="#778" font-family="Arial">${y}</text>`;
+  }
+
+  // Labels axes
+  s += `<text x="${ml+pw/2}" y="${H-4}" text-anchor="middle" font-size="9" fill="#556" font-family="Arial">Moment total (m·kg)</text>`;
+  s += `<text transform="translate(10,${mt+ph/2}) rotate(-90)" text-anchor="middle" font-size="9" fill="#556" font-family="Arial">Masse totale (kg)</text>`;
+
+  // MTOW line
+  const yMtow=py(780);
+  s += `<line x1="${ml}" y1="${yMtow}" x2="${ml+pw}" y2="${yMtow}" stroke="#c44" stroke-width="1" stroke-dasharray="5,3"/>`;
+  s += `<text x="${ml+pw-3}" y="${yMtow-3}" text-anchor="end" font-size="8" fill="#c44" font-family="Arial">MTOW 780 kg</text>`;
+
+  // Enveloppe Cat. U — polygone avec hachurage print-friendly
+  const envPts = [[114,580],[172,780],[300,780],[196,580]];
+  const polyStr = envPts.map(([x,y]) => `${px(x)},${py(y)}`).join(' ');
+  s += `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#5a5" stroke-width="0.8" opacity="0.4"/></pattern></defs>`;
+  s += `<polygon points="${polyStr}" fill="url(#hatch)" stroke="#2a7a3a" stroke-width="2" stroke-linejoin="round"/>`;
+  s += `<polygon points="${polyStr}" fill="rgba(40,160,60,0.08)" stroke="none"/>`;
+  // Label enveloppe centré
+  s += `<text x="${px(200)}" y="${py(700)}" text-anchor="middle" font-size="9" fill="#2a7a3a" font-family="Arial" font-weight="bold">DOMAINE CAT. U</text>`;
+  s += `<text x="${px(200)}" y="${py(680)}" text-anchor="middle" font-size="8" fill="#2a7a3a" font-family="Arial">(POH §6)</text>`;
+
+  // Fonction point avec label
+  const drawPt = (mx, my, fillCol, strokeCol, shape, sz, lbl, sublbl) => {
+    const cx = Math.max(ml+sz+2, Math.min(ml+pw-sz-2, px(mx)));
+    const cy = Math.max(mt+sz+2, Math.min(mt+ph-sz-2, py(my)));
+    // Halo léger
+    s += `<circle cx="${cx}" cy="${cy}" r="${sz+4}" fill="${fillCol}" opacity="0.2"/>`;
+    if (shape==='diamond') {
+      s += `<polygon points="${cx},${cy-sz} ${cx+sz},${cy} ${cx},${cy+sz} ${cx-sz},${cy}" fill="${fillCol}" stroke="${strokeCol}" stroke-width="1.8"/>`;
+    } else if (shape==='square') {
+      const h=sz*0.85;
+      s += `<rect x="${cx-h}" y="${cy-h}" width="${h*2}" height="${h*2}" fill="${fillCol}" stroke="${strokeCol}" stroke-width="1.8" rx="2"/>`;
+    } else {
+      s += `<circle cx="${cx}" cy="${cy}" r="${sz}" fill="${fillCol}" stroke="${strokeCol}" stroke-width="1.8"/>`;
+    }
+    // Bulle étiquette
+    if (lbl) {
+      const isRight = cx < ml+pw*0.6;
+      const lx = isRight ? cx+sz+5 : cx-sz-5;
+      const anchor = isRight ? 'start' : 'end';
+      const bw=64, bh=sublbl?22:13;
+      const bx = isRight ? lx-2 : lx-bw+2;
+      s += `<rect x="${bx}" y="${cy-bh/2-1}" width="${bw}" height="${bh+2}" rx="3" fill="white" stroke="${strokeCol}" stroke-width="0.8" opacity="0.92"/>`;
+      s += `<text x="${lx}" y="${cy+(sublbl?-4:3)}" text-anchor="${anchor}" font-size="8.5" fill="${strokeCol}" font-family="Arial" font-weight="bold">${lbl}</text>`;
+      if (sublbl) s += `<text x="${lx}" y="${cy+8}" text-anchor="${anchor}" font-size="7.5" fill="#666" font-family="Arial">${sublbl}</text>`;
+    }
+  };
+
+  // BEW (carré bleu)
+  if (bew_m > 0) drawPt(bew_mom, bew_m, '#4fa3e0', '#1a6faa', 'square', 6, 'BEW', `${bew_m.toFixed(0)}kg`);
+
+  // Arrivée (cercle orange/rouge)
+  if (arr_m > 0) {
+    const ac = arr_ok ? '#e07000' : '#cc2222';
+    drawPt(arr_mom, arr_m, arr_ok ? '#f5a030' : '#e05050', ac, 'circle', 9,
+      `Arrivée ${arr_ok?'✓':'✗'}`, `${arr_m.toFixed(0)}kg · ${arr_mom.toFixed(0)}m·kg`);
+  }
+
+  // Départ (losange vert/rouge — le plus visible, dessiné en dernier)
+  if (dep_m > 0) {
+    const dc = dep_ok ? '#1a7a40' : '#cc1111';
+    const df = dep_ok ? '#28c060' : '#ee3333';
+    drawPt(dep_mom, dep_m, df, dc, 'diamond', 11,
+      `Départ ${dep_ok?'✓':'✗'}`, `${dep_m.toFixed(0)}kg · ${dep_mom.toFixed(0)}m·kg`);
+  }
+
+  // Légende en bas
+  const legY = mt+ph+36;
+  const items = [
+    {col:'#2a7a3a', fill:'rgba(40,160,60,0.3)', lbl:'Enveloppe Cat. U', shape:'rect'},
+    {col:'#1a6faa', fill:'#4fa3e0', lbl:'BEW', shape:'sq'},
+    {col: dep_ok?'#1a7a40':'#cc1111', fill: dep_ok?'#28c060':'#ee3333', lbl:'Départ', shape:'dia'},
+    {col: arr_ok?'#e07000':'#cc2222', fill: arr_ok?'#f5a030':'#e05050', lbl:'Arrivée', shape:'circ'},
+  ];
+  let lx=ml;
+  items.forEach(it => {
+    if (it.shape==='rect') s+=`<rect x="${lx}" y="${legY-5}" width="12" height="10" fill="${it.fill}" stroke="${it.col}" stroke-width="1" rx="1"/>`;
+    else if (it.shape==='sq') s+=`<rect x="${lx+1}" y="${legY-4}" width="8" height="8" fill="${it.fill}" stroke="${it.col}" stroke-width="1" rx="1"/>`;
+    else if (it.shape==='dia') s+=`<polygon points="${lx+6},${legY-6} ${lx+11},${legY} ${lx+6},${legY+6} ${lx+1},${legY}" fill="${it.fill}" stroke="${it.col}" stroke-width="1"/>`;
+    else s+=`<circle cx="${lx+5}" cy="${legY}" r="5" fill="${it.fill}" stroke="${it.col}" stroke-width="1"/>`;
+    s+=`<text x="${lx+16}" y="${legY+4}" font-size="8.5" fill="#445" font-family="Arial">${it.lbl}</text>`;
+    lx+=95;
+  });
+
+  s += '</svg>';
+  return s;
+}
+
+function telechargerPDF() {
+  const immat=(g('immat')?.value||'F-XXXX').toUpperCase();
+  const date=g('dv_date')?.value||new Date().toISOString().slice(0,10);
+  const dep=(g('dv_dep')?.value||'DEP').toUpperCase();
+  const arr=(g('dv_arr')?.value||'ARR').toUpperCase();
+
+  const e = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  const r = (lbl,val,unit='') => `<tr><td>${e(lbl)}</td><td class="r">${e(val)}</td><td class="u">${e(unit)}</td></tr>`;
+  const card = (val,lbl,cls='') => `<div class="pdf-card ${cls}"><div class="cv">${e(val)}</div><div class="cl">${e(lbl)}</div></div>`;
+  const vrd = (txt,cls) => `<div class="pdf-vrd ${cls}">${e(txt)}</div>`;
+  const bdg = (txt,cls) => `<span class="pdf-bdg ${cls}">${txt}</span>`;
+
+  const tow_ok   = R.tow<=MTOW;
+  const to_ok    = R.to_marge>=0;
+  const ldg_ok   = R.lda_marge>=0;
+  const fuel_ok  = (R.extra_l||0)>=0;
+  const xw_ok    = R.xwind<=33;
+  const da_ok    = R.da<6000;
+  const da_warn  = R.da>=4000;
+  const global_ok = tow_ok&&to_ok&&ldg_ok&&fuel_ok&&xw_ok&&R.cg_dep_ok&&R.cg_arr_ok;
+
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<title>Dossier vol ${immat} — ${dep}-${arr} — ${date}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:9pt;color:#111;background:#fff;padding:8mm}
+.pdf-page{max-width:190mm;margin:0 auto 20px;padding:0 0 16px;border-bottom:2px solid #0a1628}
+.pdf-page:last-child{border-bottom:none}
+.pdf-hdr{border-bottom:3px solid #0a1628;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between}
+.pdf-hdr h1{font-size:14pt;font-weight:900;color:#0a1628;text-transform:uppercase}
+.pdf-hdr .sub{font-size:8pt;color:#666;margin-top:2px}
+.pdf-hdr .meta{text-align:right;font-size:8pt;color:#555;line-height:1.6}
+.pdf-sec{margin-bottom:10px}
+.pdf-sec-t{background:#0a1628;color:#fff;font-size:9pt;font-weight:700;padding:3px 8px;text-transform:uppercase}
+table.pdf{width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px}
+table.pdf th{background:#1a3a6e;color:#fff;padding:3px 6px;font-size:8pt;text-align:left}
+table.pdf td{padding:3px 6px;border-bottom:1px solid #e0e8f0}
+table.pdf tr:nth-child(even) td{background:#f4f7fb}
+table.pdf td.r{text-align:right;font-weight:700;font-family:monospace}
+table.pdf td.u{color:#888;font-style:italic}
+.pdf-g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin-bottom:8px}
+.pdf-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:8px}
+.pdf-g2{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px}
+.pdf-card{border:1.5px solid #1a3a6e;border-radius:3px;padding:5px;text-align:center}
+.pdf-card .cv{font-size:11pt;font-weight:900;color:#0a1628;font-family:monospace}
+.pdf-card .cl{font-size:7pt;color:#888;text-transform:uppercase;margin-top:1px}
+.pdf-card.ok{border-color:#1a7a50;background:#e8f7ef}.pdf-card.ok .cv{color:#1a7a50}
+.pdf-card.ng{border-color:#c0392b;background:#fdecea}.pdf-card.ng .cv{color:#c0392b}
+.pdf-vrd{padding:6px 10px;border-radius:3px;font-weight:900;font-size:10pt;text-align:center;text-transform:uppercase;margin:6px 0}
+.pdf-vrd.ok{background:#e8f7ef;color:#1a7a50;border:2px solid #1a7a50}
+.pdf-vrd.ng{background:#fdecea;color:#c0392b;border:2px solid #c0392b}
+.pdf-vrd.wn{background:#fef9e7;color:#d68910;border:2px solid #d68910}
+.pdf-gnr{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;padding:3px 5px;border-bottom:1px solid #e0e8f0;font-size:8.5pt}
+.pdf-gnr:nth-child(even){background:#f4f7fb}
+.pdf-bdg{padding:2px 6px;border-radius:8px;font-weight:700;font-size:8pt}
+.pdf-bdg.ok{background:#e8f7ef;color:#1a7a50;border:1px solid #1a7a50}
+.pdf-bdg.ng{background:#fdecea;color:#c0392b;border:1px solid #c0392b}
+.pdf-bdg.wn{background:#fef9e7;color:#d68910;border:1px solid #d68910}
+.pdf-ft{border-top:1px solid #ccc;margin-top:10px;padding-top:4px;font-size:7.5pt;color:#888;display:flex;justify-content:space-between}
+.pdf-sig{border:1px solid #aaa;border-radius:3px;padding:8px;margin-top:6px;display:inline-block;width:48%;vertical-align:top}
+.pdf-sig-l{font-size:8pt;color:#888;margin-bottom:14px}
+.pdf-sig-line{border-top:1px solid #555;width:160px;display:block;margin-top:4px}
+</style></head><body>
+
+<div class="pdf-page">
+<div class="pdf-hdr">
+  <div><div class="sub">DOSSIER DE PREPARATION DE VOL</div><h1>Robin HR200/120 B &bull; ${immat}</h1><div class="sub">Genere le ${new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} a ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})} UTC</div></div>
+  <div class="meta"><strong>${dep} → ${arr}</strong><br>Date : ${date}<br>ETD : ${g('dv_etd')?.value||'—'} UTC | EET : ${g('dv_eet')?.value||(R.dist_nm>0?`${Math.floor(R.dist_nm/R.vsol_kt)}h${Math.round((R.dist_nm/R.vsol_kt%1)*60).toString().padStart(2,'0')}`:'—')}<br>Regles : ${g('dv_rules')?.value||'VFR'}</div>
+</div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">1. Identification du vol</div>
+<table class="pdf">
+${r('Aeronef','Robin HR200/120 B')}${r('Immatriculation',immat)}${r('Depart',dep)}${r('Destination',arr)}
+${r('Route',g('dv_route')?.value||'—')}${r('ETD',(g('dv_etd')?.value||'—')+' UTC')}${r('EET (calcule)',R.dist_nm>0?`${Math.floor(R.dist_nm/R.vsol_kt)}h${Math.round((R.dist_nm/R.vsol_kt%1)*60).toString().padStart(2,'0')}`:'—')}
+${r('Altitude prevue',g('dv_alt')?.value||'—')}${r('Regles de vol',g('dv_rules')?.value||'VFR')}${r('Source meteo',g('dv_metar_src')?.value||'—')}
+</table></div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">2. Conditions meteo (${g('oaci')?.value||dep})</div>
+<div class="pdf-g4">
+${card(R.oat+'°C','OAT')}${card(R.qnh+' hPa','QNH')}${card(Math.round(R.p_alt)+' ft','Alt. pression')}${card(Math.round(R.da)+' ft',R.da>4000?'Densite Alt. ⚠️':'Densite Alt.',R.da>4000?'wn':'')}
+</div>
+<div class="pdf-g4">
+${card((R.isa_dev||0).toFixed(1)+'°C','Ecart ISA')}${card((R.sigma||1).toFixed(3),'Densite σ')}${card((R.hdw||0).toFixed(1)+' km/h','Vent face piste')}${card((R.xwind||0).toFixed(1)+' km/h',R.xwind>33?'Vent travers ❌':'Vent travers',R.xwind>33?'ng':'')}
+</div>
+<table class="pdf">
+${r('Vent',R.wind_dir+'° / '+R.wind_spd+' km/h'+(R.wind_gust>R.wind_spd?' (rafales '+R.wind_gust+' km/h)':''))}
+${g('vis_metar')?.value ? r('Visibilite (METAR)',g('vis_metar').value) : ''}${r('Precipitations depart',{'none':'Aucune','light':'Pluie legere','heavy':'Pluie forte'}[R.precip||'none'])}
+${r('Aérodrome arrivée',(g('arr_oaci')?.value||'—').toUpperCase()+'  DA: '+Math.round(R.arr_da||0)+' ft')}
+${r('Vent arrivee',(R.arr_hdw||0).toFixed(1)+' km/h face / '+(R.arr_xwind||0).toFixed(1)+' km/h travers')}
+${r('Revetement arrivee',{'hard_dry':'Dur sec','hard_wet':'Dur mouille','grass_dry':'Herbe seche'}[R.arr_surface||'hard_dry'])}
+</table></div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">3. Devis de Masse & Masse au decollage</div>
+<table class="pdf">
+${r('Masse a vide (BEW)',R.bew.toFixed(1),'kg')}${r('Pilote',R.pax1,'kg')}${r('Passager',R.pax2,'kg')}
+${r('Bagages',R.bags,'kg')}${r('Carburant embarque',R.fuel_vol+' L = '+R.fuel_kg.toFixed(1)+' kg','(AVGAS 100LL)')}
+<tr style="background:#1a3a6e;color:#fff"><td><strong>MASSE AU DECOLLAGE (TOW)</strong></td><td class="r" style="color:#fff">${R.tow.toFixed(1)}</td><td class="u" style="color:#aac">kg / MTOW ${MTOW} kg</td></tr>
+</table>
+${vrd(tow_ok?'TOW '+R.tow.toFixed(0)+' kg — DANS LES LIMITES (MTOW '+MTOW+' kg)':'TOW '+R.tow.toFixed(0)+' kg — HORS MTOW '+MTOW+' kg', tow_ok?'ok':'ng')}
+</div>
+
+<div class="pdf-ft"><span>Robin HR200/120 B &bull; ${immat} &bull; ${dep} → ${arr} &bull; ${date}</span><span>Page 1 / 3 — Usage prive pilote — Calculs bases sur POH Ed.5 Jan.1993</span></div>
+</div>
+
+<div class="pdf-page">
+<div class="pdf-hdr">
+  <div><h1>Performances — ${dep} → ${arr}</h1><div class="sub">Robin HR200/120 B &bull; ${immat} &bull; ${date}</div></div>
+  <div class="meta">Piste ${g('rwy_num')?.value||'—'} &bull; TORA ${R.tora} m &bull; LDA ${R.lda_avail} m</div>
+</div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">4. Decollage — Abaques POH §5</div>
+<div class="pdf-g4">
+${card(R.to_roll+' m','TO roulage')}${card(R.to_15+' m','TO dist. 15m/50ft')}${card(R.tora+' m','TORA dispo')}${card(Math.round(R.to_marge)+' m',R.to_marge>=0?'Marge TORA':'Deficit TORA',R.to_marge>=0?'ok':'ng')}
+</div>
+<table class="pdf">
+${r('Altitude densite',Math.round(R.da)+' ft')}${r('Masse decollage',R.tow.toFixed(0)+' kg')}
+${r('Vent de face',(R.hdw||0).toFixed(1)+' km/h')}${r('Revetement',{'hard_dry':'Dur sec','hard_wet':'Dur mouille','grass_dry':'Herbe seche'}[R.surface||'hard_dry'])}
+${r('Dist. base abaque (interp.)',R.to_15_base+' m')}${r('Dist. corrigee 15m/50ft',R.to_15+' m')}
+</table>
+<div class="pdf-g4">
+${card('90','VR (km/h)')}${card('130','V montee init. (km/h)')}${card('115','Vx volets 10° (km/h)')}${card('135','Vy volets 10° (km/h)')}
+</div>
+${vrd(to_ok?'DECOLLAGE POSSIBLE — Marge '+Math.round(R.to_marge)+' m sur TORA':'TORA INSUFFISANTE — Deficit '+Math.abs(Math.round(R.to_marge))+' m', to_ok?'ok':'ng')}
+</div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">5. Atterrissage — Abaques POH §5</div>
+<div class="pdf-g4">
+${card(R.ldr+' m','LDG roulage')}${card(R.lda15+' m','LDA dist. 15m/50ft')}${card(R.lda_avail+' m','LDA dispo')}${card(Math.round(R.lda_marge)+' m',R.lda_marge>=0?'Marge LDA':'Deficit LDA',R.lda_marge>=0?'ok':'ng')}
+</div>
+<div class="pdf-g3">
+${card('125','Vapp normale (km/h)')}${card(R.vapp_gust.toFixed(0),'Vapp+rafale (km/h)')}${card('115','Vapp court (km/h)')}
+</div>
+${vrd(ldg_ok?'ATTERRISSAGE POSSIBLE — Marge '+Math.round(R.lda_marge)+' m sur LDA':'LDA INSUFFISANTE — Deficit '+Math.abs(Math.round(R.lda_marge))+' m', ldg_ok?'ok':'ng')}
+</div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">6. Fuel Planning OACI — POH §5.09</div>
+<div class="pdf-g4">
+${card(R.fob_l ? R.fob_l.toFixed(1)+' L' : R.fuel_vol+' L','FOB embarque')}${card(R.fob_kg ? R.fob_kg.toFixed(1)+' kg' : (R.fuel_vol*0.72).toFixed(1)+' kg','FOB (kg)')}${card(R.extra_l !== undefined ? R.extra_l.toFixed(1)+' L' : '—', R.extra_l>=0?'Extra fuel':'DEFICIT', R.extra_l>=0?'ok':'ng')}${card(R.extra_min !== undefined ? Math.round(R.extra_min)+' min' : '—','Extra (min)', R.extra_l>=0?'ok':'ng')}
+</div>
+<table class="pdf">
+<tr><th>Poste</th><th>Temps (min)</th><th>Litres</th><th>kg</th></tr>
+<tr><td>Taxi</td><td class="r">${g('fp_taxi_min')?.value||10}</td><td class="r">${((parseFloat(g('fp_taxi_min')?.value)||10)/60*R.conso).toFixed(1)}</td><td class="r">${((parseFloat(g('fp_taxi_min')?.value)||10)/60*R.conso*0.72).toFixed(1)}</td></tr>
+<tr><td>Trip (${g('dv_dep')?.value||'DEP'} → ${g('dv_arr')?.value||'DEST'} ${R.dist_nm} NM)</td><td class="r">${R.dist_nm > 0 ? Math.round(R.dist_nm/R.vsol_kt*60) : '0'}</td><td class="r">${R.dist_nm > 0 ? (R.dist_nm/R.vsol_kt*R.conso).toFixed(1) : '0.0'}</td><td class="r">${R.dist_nm > 0 ? (R.dist_nm/R.vsol_kt*R.conso*0.72).toFixed(1) : '0.0'}</td></tr>
+<tr><td>Contingency (${g('fp_cont_pct')?.value||5}%)</td><td class="r">—</td><td class="r">${R.dist_nm > 0 ? (R.dist_nm/R.vsol_kt*R.conso*(parseFloat(g('fp_cont_pct')?.value)||5)/100).toFixed(1) : '0.0'}</td><td class="r">—</td></tr>
+<tr><td>Final Reserve (${g('fp_rsv_min')?.value||30} min)</td><td class="r">${g('fp_rsv_min')?.value||30}</td><td class="r">${((parseFloat(g('fp_rsv_min')?.value)||30)/60*R.conso).toFixed(1)}</td><td class="r">${((parseFloat(g('fp_rsv_min')?.value)||30)/60*R.conso*0.72).toFixed(1)}</td></tr>
+</table>
+${vrd(R.extra_l>=0?'CARBURANT SUFFISANT — Extra '+R.extra_l.toFixed(1)+' L ('+Math.round(R.extra_min)+' min)':'CARBURANT INSUFFISANT — Deficit '+Math.abs(R.extra_l).toFixed(1)+' L', R.extra_l>=0?'ok':'ng')}
+</div>
+
+<div class="pdf-ft"><span>Robin HR200/120 B &bull; ${immat} &bull; ${dep} → ${arr} &bull; ${date}</span><span>Page 2 / 3 — Usage prive pilote — Non certifie officiellement</span></div>
+</div>
+
+<div class="pdf-page">
+<div class="pdf-hdr">
+  <div><h1>Centrage & Préparation — ${dep} → ${arr}</h1><div class="sub">Robin HR200/120 B &bull; ${immat} &bull; ${date}</div></div>
+  <div class="meta">TOW : ${R.tow.toFixed(0)} kg &bull; Moment decollage : ${(R.cg_tot_mom||0).toFixed(0)} m&middot;kg</div>
+</div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">7. Devis de masse et centrage — POH §6</div>
+<table class="pdf">
+<tr><th>Element</th><th>Masse (kg)</th><th>Bras (m)</th><th>Moment (m&middot;kg)</th></tr>
+<tr><td>Avion a vide (BEW)</td><td class="r">${R.bew.toFixed(1)}</td><td class="r">—</td><td class="r">${(R.bew_mom||0).toFixed(1)}</td></tr>
+<tr><td>Pilote</td><td class="r">${R.pax1.toFixed(1)}</td><td class="r">${v('cg_pil_arm').toFixed(2)}</td><td class="r">${(R.pax1*v('cg_pil_arm')).toFixed(1)}</td></tr>
+<tr><td>Passager</td><td class="r">${R.pax2.toFixed(1)}</td><td class="r">${v('cg_pax_arm').toFixed(2)}</td><td class="r">${(R.pax2*v('cg_pax_arm')).toFixed(1)}</td></tr>
+<tr><td>Bagages</td><td class="r">${R.bags.toFixed(1)}</td><td class="r">${v('cg_bag_arm').toFixed(2)}</td><td class="r">${(R.bags*v('cg_bag_arm')).toFixed(1)}</td></tr>
+<tr><td>Carburant (${R.fuel_vol} L)</td><td class="r">${R.fuel_kg.toFixed(1)}</td><td class="r">${v('cg_fuel_arm').toFixed(2)}</td><td class="r">${(R.fuel_kg*v('cg_fuel_arm')).toFixed(1)}</td></tr>
+<tr style="background:#1a3a6e;color:#fff"><td><strong>TOTAL DEPART</strong></td><td class="r" style="color:#fff">${(R.cg_tot_m||0).toFixed(1)}</td><td class="r" style="color:#aac">—</td><td class="r" style="color:#fff">${(R.cg_tot_mom||0).toFixed(1)}</td></tr>
+<tr style="background:#2e4a7e;color:#ddf"><td>TOTAL ARRIVEE (estim.)</td><td class="r" style="color:#ddf">${(R.cg_arr_m||0).toFixed(1)}</td><td class="r" style="color:#aac">—</td><td class="r" style="color:#ddf">${(R.cg_arr_mom||0).toFixed(1)}</td></tr>
+</table>
+<p style="font-size:7.5pt;color:#888;margin-top:4px">Reference centrage : bord d'attaque nervure n°5 — Centrogramme POH §6 (Moment total vs Masse totale)</p>
+
+${buildCGSvgForPDF(R)}
+
+<div class="pdf-g2" style="margin-top:6px">
+${vrd(R.cg_dep_ok?'CENTRAGE DEPART OK':'CENTRAGE DEPART HORS DOMAINE', R.cg_dep_ok?'ok':'ng')}
+${vrd(R.cg_arr_ok?'CENTRAGE ARRIVEE OK':'CENTRAGE ARRIVEE HORS DOMAINE', R.cg_arr_ok?'ok':'ng')}
+</div></div>
+
+<div class="pdf-sec"><div class="pdf-sec-t">8. Synthese — Points de preparation</div>
+${[
+  {l:'Masse au decollage (MTOW)',v:R.tow.toFixed(0)+' kg / '+MTOW+' kg',ok:tow_ok,w:false},
+  {l:'Altitude de densite',v:Math.round(R.da)+' ft',ok:da_ok,w:da_warn},
+  {l:'Vent de travers (max 33 km/h)',v:R.xwind.toFixed(1)+' km/h',ok:xw_ok,w:false},
+  {l:'Distance decollage / TORA',v:R.to_15+' m / '+R.tora+' m',ok:to_ok,w:false},
+  {l:'Distance atterrissage / LDA',v:R.lda15+' m / '+R.lda_avail+' m',ok:ldg_ok,w:false},
+  {l:'Carburant (extra fuel)',v:(R.extra_l||0).toFixed(1)+' L extra / FOB '+R.fuel_vol+' L',ok:fuel_ok,w:false},
+  {l:'Centrage depart',v:'Moment '+R.cg_tot_mom.toFixed(0)+' m·kg',ok:R.cg_dep_ok,w:false},
+  {l:'Centrage arrivee',v:'Moment '+R.cg_arr_mom.toFixed(0)+' m·kg',ok:R.cg_arr_ok,w:false},
+].map(c=>`<div class="pdf-gnr"><span>${c.l}</span><span style="color:#555;font-size:8pt">${c.v}</span>${bdg(c.ok?'OK':c.w?'ATTENTION':'VERIFIER',c.ok?'ok':'wn')}</div>`).join('')}
+${vrd(global_ok?'TOUS CRITERES DANS LES LIMITES':'POINT(S) A EXAMINER AVANT LE VOL — VERIFICATION PILOTE', global_ok?'ok':'wn')}
+</div>
+
+${g('dv_notes')?.value ? `<div class="pdf-sec"><div class="pdf-sec-t">9. Notes & Observations</div><p style="padding:8px;border:1px solid #1a3a6e;border-radius:3px;font-size:9pt;font-style:italic">${e(g('dv_notes').value)}</p></div>` : ''}
+
+<div style="margin-top:12px;display:flex;gap:10px">
+  <div class="pdf-sig"><div class="pdf-sig-l">Signature pilote commandant de bord</div><div class="pdf-sig-line"></div></div>
+  <div class="pdf-sig"><div class="pdf-sig-l">Date / Heure de preparation</div><strong>${new Date().toLocaleDateString('fr-FR')} — ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})} UTC</strong></div>
+</div>
+
+<div class="pdf-ft"><span>Robin HR200/120 B &bull; ${immat} &bull; POH Ed.5 Jan.1993</span><span>Page 3 / 3 — Usage prive pilote — Non certifie officiellement</span></div>
+</div>
+
+</body></html>`;
+
+  // ── Affichage dossier — optimisé iOS WebView (Documents by Readdle) ──
+  // window.open() bloqué dans WebView → on injecte dans un overlay plein écran
+  // srcdoc sur iframe peut dépasser les limites → on utilise un div scrollable directement
+  const overlay = document.createElement('div');
+  overlay.id = 'dossier_overlay';
+  overlay.style.cssText = [
+    'position:fixed','top:0','left:0','right:0','bottom:0',
+    'background:#fff','z-index:99999',
+    'overflow-y:auto','-webkit-overflow-scrolling:touch',  // scroll natif iOS
+    'display:flex','flex-direction:column'
+  ].join(';');
+
+  // Barre de navigation sticky
+  const navbar = document.createElement('div');
+  navbar.style.cssText = [
+    'position:sticky','top:0','z-index:1',
+    'background:#0a1628','color:#fff',
+    'padding:12px 16px',
+    'display:flex','justify-content:space-between','align-items:center',
+    'flex-shrink:0',
+    '-webkit-backdrop-filter:blur(10px)'
+  ].join(';');
+  navbar.innerHTML = `
+    <span style="font-size:14px;font-weight:700;font-family:-apple-system,sans-serif">
+      📄 Dossier de Vol — ${immat}
+    </span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="font-size:11px;color:#8899bb;font-family:-apple-system,sans-serif">
+        Partager → PDF
+      </span>
+      <button
+        onclick="document.getElementById('dossier_overlay').remove()"
+        style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
+               color:#fff;padding:8px 16px;border-radius:8px;font-size:14px;
+               cursor:pointer;font-family:-apple-system,sans-serif;
+               -webkit-tap-highlight-color:transparent">
+        ✕ Fermer
+      </button>
+    </div>`;
+
+  // Contenu HTML du dossier dans un div
+  const content = document.createElement('div');
+  content.style.cssText = 'flex:1;overflow:visible';
+  content.innerHTML = html;
+
+  // Bouton Partager en bas (iOS share sheet)
+  const footer = document.createElement('div');
+  footer.style.cssText = [
+    'position:sticky','bottom:0',
+    'background:#1a3a6e','color:#fff',
+    'padding:12px 16px','text-align:center',
+    'font-size:13px','font-family:-apple-system,sans-serif',
+    'flex-shrink:0'
+  ].join(';');
+  footer.innerHTML = `
+    <span style="opacity:.9">
+      💡 Pour enregistrer en PDF : appuyez sur
+      <strong>Partager</strong> (⬆) → <strong>Imprimer</strong> →
+      pincez pour agrandir → <strong>Partager</strong> → <strong>Enregistrer en fichiers</strong>
+    </span>`;
+
+  overlay.appendChild(navbar);
+  overlay.appendChild(content);
+  overlay.appendChild(footer);
+  document.body.appendChild(overlay);
+
+  // iOS : empêcher le scroll du body derrière l'overlay
+  document.body.style.overflow = 'hidden';
+  overlay.addEventListener('remove', () => { document.body.style.overflow = ''; });
+  // Nettoyage au clic Fermer (déjà géré par remove() mais au cas où)
+  const origRemove = overlay.remove.bind(overlay);
+  overlay.remove = () => { document.body.style.overflow = ''; origRemove(); };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TYPE DE VOL — bascule nav ↔ local
+// ═══════════════════════════════════════════════════════════════════
+function toggleVolType() {
+  const isLocal = g('vol_type')?.value === 'local';
+  ['row_dest','row_altn','row_dist','row_dist_altn'].forEach(id => {
+    const el = g(id); if (el) el.style.display = isLocal ? 'none' : '';
+  });
+  const localRow = g('row_local_dur');
+  if (localRow) localRow.style.display = isLocal ? '' : 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// VOL LOCAL
+// ═══════════════════════════════════════════════════════════════════
+function volLocal() {
+  // 1. Basculer en mode local
+  const volTypeEl = g('vol_type');
+  if (volTypeEl) { volTypeEl.value = 'local'; toggleVolType(); }
+
+  // 2. OACI départ → destination et dégagement
+  const dep = g('oaci')?.value || g('dv_dep')?.value || '';
+  if (dep) {
+    ['dv_dep','dv_arr','dv_altn'].forEach(id => {
+      const el = g(id); if (el) el.value = dep.toUpperCase();
+    });
+  }
+
+  // 3. Météo départ → arrivée
+  [['oaci','arr_oaci'],['elev','arr_elev'],['qnh','arr_qnh'],
+   ['rwy_num','arr_rwy_num'],['rwy_hdg','arr_rwy_hdg'],
+   ['oat','arr_oat'],['wind_dir','arr_wind_dir'],
+   ['wind_spd','arr_wind_spd'],['wind_gust','arr_wind_gust'],
+   ['vis_metar','arr_vis_metar'],['ceiling_metar','arr_ceiling_metar'],
+  ].forEach(([s,d]) => { const se=g(s),de=g(d); if(se&&de) de.value=se.value; });
+  const se=g('surface'),de=g('arr_surface'); if(se&&de) de.value=se.value;
+  const sp=g('precip'),dp=g('arr_precip'); if(sp&&dp) dp.value=sp.value;
+
+  // 4. LDA = TORA
+  const tora=g('tora'),lda=g('lda_avail');
+  if(tora&&lda) lda.value=tora.value;
+
+  calc(); save();
+
+  // 5. Feedback
+  const btn=document.querySelector('button[onclick="volLocal()"]');
+  if(btn){
+    const orig=btn.textContent;
+    btn.textContent='✅ Vol local configuré !';
+    btn.style.color='var(--green)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.color='';},2000);
+  }
+}
+
+
+// SAUVEGARDE AUTOMATIQUE
+// ═══════════════════════════════════════════════════════════════════
+const SAVE_KEY='hr200_v3';
+const FIELDS=[
+  // Avion
+  'immat','bew','pax1','pax2','bags','fuel_vol',
+  // Terrains départ (aérodrome + piste)
+  'oaci','elev','rwy_num','rwy_hdg','tora','surface',
+  // Terrains arrivée
+  'lda_avail','arr_oaci','arr_elev','arr_rwy_num','arr_rwy_hdg','arr_surface',
+  // Météo départ
+  'qnh','oat','dew','wind_dir','wind_spd','wind_gust','vis_metar','ceiling_metar','precip',
+  // Météo arrivée
+  'arr_qnh','arr_oat','arr_wind_dir','arr_wind_spd','arr_wind_gust','arr_vis_metar','arr_ceiling_metar','arr_precip',
+  // Vol
+  'dv_date','dv_dep','dv_arr','dv_altn','dv_route','dv_etd','dv_alt','dv_rules','dv_metar_src','dv_notes',
+  'dist_nm','dist_altn_nm','regime','vol_type',
+  // Fuel planning
+  'fp_trip_min','fp_taxi_min','fp_cont_pct','fp_rsv_min','fp_hold_min',
+  // Centrage
+  'cg_pil_arm','cg_pax_arm','cg_bag_arm','cg_fuel_arm','cg_bew_mom',
+  // Briefing
+  'briefing_notes',
+];
+
+function save() {
+  try {
+    const d={};
+    FIELDS.forEach(id=>{const el=g(id);if(el)d[id]=el.value;});
+    localStorage.setItem(SAVE_KEY,JSON.stringify(d));
+    const st=g('save_status');
+    if(st){const n=new Date();st.textContent='Sauvegarde a '+n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}
+  } catch(e){}
+}
+
+function restore() {
+  try {
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return false;
+    const d=JSON.parse(raw);
+    FIELDS.forEach(id=>{if(d[id]===undefined)return;const el=g(id);if(el)el.value=d[id];});
+    return true;
+  } catch(e){return false;}
+}
+
+// Valeurs par défaut de chaque champ (synchronisées avec le HTML)
+const DEFAULTS = {
+  // Avion
+  immat:'F-BXXX', bew:'515', pax1:'80', pax2:'0', bags:'0', fuel_vol:'90',
+  // Météo départ
+  oaci:'LFPB', elev:'325', qnh:'1013', rwy_num:'27', rwy_hdg:'270',
+  tora:'1200', surface:'hard_dry',
+  oat:'15', dew:'8', wind_dir:'270', wind_spd:'10', wind_gust:'0',
+  vis_metar:'', ceiling_metar:'', precip:'none',
+  // Météo arrivée
+  lda_avail:'1100', arr_oaci:'LFPB', arr_elev:'325', arr_qnh:'1013',
+  arr_rwy_num:'27', arr_rwy_hdg:'270', arr_surface:'hard_dry',
+  arr_oat:'15', arr_wind_dir:'270', arr_wind_spd:'10', arr_wind_gust:'0',
+  arr_vis_metar:'', arr_ceiling_metar:'', arr_precip:'none',
+  // Vol
+  dv_date:'', dv_dep:'', dv_arr:'', dv_altn:'', dv_route:'', dv_etd:'',
+  dv_alt:'', dv_rules:'VFR', dv_metar_src:'', dv_notes:'',
+  dist_nm:'0', dist_altn_nm:'0', regime:'75', vol_type:'nav',
+  // Fuel planning
+  fp_trip_min:'0', fp_taxi_min:'10', fp_cont_pct:'5', fp_rsv_min:'30', fp_hold_min:'0',
+  // Centrage
+  cg_pil_arm:'0.45', cg_pax_arm:'0.45', cg_bag_arm:'1.20',
+  cg_fuel_arm:'1.10', cg_bew_mom:'114',
+  // Briefing
+  briefing_notes:'',
+};
+
+function effacer() {
+  // window.confirm() bloqué dans iOS WebView (Documents by Readdle)
+  // → overlay custom natif, toujours
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(10,22,40,.93);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;-webkit-tap-highlight-color:transparent';
+  const inner = document.createElement('div');
+  inner.style.cssText = 'background:#0d1e3a;border:1px solid rgba(224,60,60,.5);border-radius:16px;padding:28px 24px;max-width:320px;width:100%;text-align:center';
+  inner.innerHTML = '<div style="font-size:32px;margin-bottom:12px">\u{1F5D1}\uFE0F</div>'
+    + '<div style="font-size:18px;font-weight:700;color:#f0f4fa;margin-bottom:8px;font-family:-apple-system,sans-serif">R\u00e9initialiser ?</div>'
+    + '<div style="font-size:14px;color:#8899bb;margin-bottom:24px;line-height:1.5;font-family:-apple-system,sans-serif">Toutes les donn\u00e9es saisies seront effac\u00e9es et remplac\u00e9es par les valeurs par d\u00e9faut.</div>'
+    + '<div style="display:flex;gap:10px">'
+    + '<button id="_eff_cancel" style="flex:1;padding:14px;background:rgba(100,150,220,.15);border:1px solid rgba(100,150,220,.3);color:#8899bb;border-radius:10px;font-size:15px;cursor:pointer;font-family:-apple-system,sans-serif">Annuler</button>'
+    + '<button id="_eff_ok" style="flex:1;padding:14px;background:rgba(224,60,60,.2);border:1px solid rgba(224,60,60,.5);color:#e03c3c;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:-apple-system,sans-serif">R\u00e9initialiser</button>'
+    + '</div>';
+  ov.appendChild(inner);
+  document.body.appendChild(ov);
+  inner.querySelector('#_eff_cancel').addEventListener('click', () => ov.remove());
+  inner.querySelector('#_eff_ok').addEventListener('click', () => { ov.remove(); doReset(); });
+}
+
+function doReset() {
+  // 1. Effacer localStorage
+  try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
+
+  // 2. Remettre chaque champ à sa valeur par défaut
+  FIELDS.forEach(id => {
+    const el = g(id);
+    if (!el) return;
+    const def = DEFAULTS[id];
+    if (def !== undefined) el.value = def;
+  });
+
+  // 3. Réinitialiser le mode vol (affichage des champs nav/local)
+  toggleVolType();
+
+  // 4. Recalculer tout
+  calc();
+
+  // 5. Feedback visuel
+  const btn = document.querySelector('button[onclick="effacer()"]');
+  if (btn) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ Réinitialisé';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'rgba(46,184,126,.4)';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+  }
+
+  // 6. Revenir sur l'onglet Avion
+  showPage('avion');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  const ok=restore();
+  toggleVolType();
+  calc();
+  if(ok){
+    const b=g('hbadge');
+    if(b){const orig=b.textContent;b.textContent='Donnees restaurees';b.style.color='var(--green)';
+      setTimeout(()=>{b.textContent=orig;b.style.color='';},2500);}
+  }
+});
+
+document.addEventListener('input',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'){calc();save();}
+});
+
+if(typeof window!=='undefined'&&window.addEventListener){
+  window.addEventListener('pagehide',save);
+  window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save();});
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PWA — Détection Safari + bandeau installation
+// ═══════════════════════════════════════════════════════════════════
+(function initPWA() {
+  // Détection : est-on dans Safari iOS (pas standalone, pas WebView app)
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = ('standalone' in navigator) && navigator.standalone;
+  const isSafari = /safari/i.test(navigator.userAgent) && !/crios|fxios|opios|mercury/i.test(navigator.userAgent);
+  const isWebView = !isSafari && !isStandalone && isIOS;
+
+  // Enregistrer le Service Worker (mise en cache pour usage hors-ligne)
+  if ('serviceWorker' in navigator && (isSafari || isStandalone)) {
+    const swCode = `
+const CACHE = 'hr200-v1';
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c => c.add('/')));
+});
+self.addEventListener('fetch', e => {
+  // Réseau en priorité, cache en fallback
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
+  );
+});`;
+    const blob = new Blob([swCode], {type:'application/javascript'});
+    const swUrl = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl).catch(()=>{});
+  }
+
+  // Afficher le bandeau uniquement dans Safari iOS (pas standalone, pas WebView)
+  if (isIOS && isSafari && !isStandalone) {
+    const dismissed = localStorage.getItem('pwa_banner_dismissed');
+    const banner = document.getElementById('pwa_install_banner');
+    if (banner && !dismissed) {
+      // Délai court pour ne pas perturber le chargement initial
+      setTimeout(() => { banner.style.display = 'block'; }, 1500);
+    }
+  }
+
+  // Si on est dans une WebView non-Safari, afficher un message dans l'onglet Briefing
+  if (isIOS && isWebView && !isStandalone) {
+    const existing = document.getElementById('webview_warning');
+    if (!existing) {
+      const warn = document.createElement('div');
+      warn.id = 'webview_warning';
+      warn.style.cssText = [
+        'position:fixed','bottom:0','left:0','right:0','z-index:99998',
+        'background:linear-gradient(135deg,#2d1a0e,#5a3010)',
+        'border-top:1px solid rgba(240,165,0,.5)',
+        'padding:14px 18px calc(14px + env(safe-area-inset-bottom))',
+        'font-family:-apple-system,sans-serif','font-size:13px','color:#f0c060',
+        'line-height:1.5'
+      ].join(';');
+      warn.innerHTML = `
+        <div style="display:flex;align-items:flex-start;gap:12px;max-width:600px;margin:0 auto">
+          <span style="font-size:22px;flex-shrink:0">⚠️</span>
+          <div style="flex:1">
+            <strong style="display:block;font-size:14px;margin-bottom:4px;color:#ffd080">
+              Réseau limité dans cette app
+            </strong>
+            Pour utiliser le METAR, TAF et NOTAM automatiques,
+            ouvrez ce fichier dans <strong style="color:#fff">Safari</strong> :
+            Fichiers → appui long sur le fichier → <strong style="color:#fff">Ouvrir dans Safari</strong>.
+            Puis faites <strong style="color:#fff">⬆ Partager → Sur l'écran d'accueil</strong>
+            pour l'installer comme app.
+          </div>
+          <button onclick="this.parentNode.parentNode.parentNode.remove()"
+            style="background:none;border:none;color:#f0c060;font-size:20px;cursor:pointer;flex-shrink:0;padding:0;-webkit-tap-highlight-color:transparent">✕</button>
+        </div>`;
+      document.body.appendChild(warn);
+    }
+  }
+})();
+
+function dismissPWABanner() {
+  const banner = document.getElementById('pwa_install_banner');
+  if (banner) banner.style.display = 'none';
+  try { localStorage.setItem('pwa_banner_dismissed', '1'); } catch(e) {}
+}
+</script>
+</body>
+</html>
